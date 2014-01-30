@@ -4,5 +4,12 @@
     <string name="app_name">FrepeeReader</string>
     <string name="action_settings">Settings</string>
     <string name="loadFile">Load file as Freppe do</string>
+    <string name="action_expand">Содержание</string>
+    <string name="common">Введение</string>
+    <string name="strategy">Обзор стратегий</string>
+    <string name="takeAndRun">Сорви 53$ и беги</string>
+    <string name="hakimTwo">Хаким-два</string>
+    <string name="trends">Последовательности и тренды</string>
+    <string name="martingeil">Усовершенствованная система мартингейла</string>
 
 </resources>

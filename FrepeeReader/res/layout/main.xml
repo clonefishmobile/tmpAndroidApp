@@ -11,11 +11,7 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="336dp"
-        android:layout_above="@+id/button1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_height="match_parent" >
 
 		<TextView style="?android:textAppearanceMedium"
 	    android:id="@+id/readerView"	
@@ -25,13 +21,5 @@
     	android:layout_height="wrap_content"
     	android:text="" />
     </ScrollView>
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/loadFile" 
-        android:onClick="OnOpenFileClick"/>
 
 </RelativeLayout>

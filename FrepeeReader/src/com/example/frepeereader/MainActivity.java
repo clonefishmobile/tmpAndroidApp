@@ -1,16 +1,16 @@
 package com.example.frepeereader;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		reader = (TextView) findViewById(R.id.readerView);
+		showText("common.txt");
 	}
 
 	@Override
@@ -29,39 +30,55 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void OnOpenFileClick(View view) {
-		OpenFileDialog fileDialog = new OpenFileDialog(this)
-        .setFilter(".*\\.txt")
-        .setOpenDialogListener(new OpenFileDialog.OpenDialogListener() {
-            @Override
-            public void OnSelectedFile(String fileName) {
-                Toast.makeText(getApplicationContext(), fileName, Toast.LENGTH_LONG).show();
-                showText(fileName);
-            }
-        });
-		fileDialog.show();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) 
+	    {
+	    	case R.id.common:
+	    		showText("common.txt");
+	    		return true;
+	    	case R.id.strategy:
+	    		showText("strategyOverview.txt");
+	    		return true;
+	    	case R.id.takeAndRun:
+	    		showText("takeAndRun.txt");
+	    		return true;
+	    	case R.id.hakimTwo:
+	    		showText("hakimTwo.txt");
+	    		return true;
+	    	case R.id.trends:
+	    		showText("trends.txt");
+	    		return true;
+	    	case R.id.martingeil:
+	    		showText("martingeil.txt");
+	    		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
-
-	private void showText(String fileName)
+	    
+	private void showText(String filename)
 	{
 		reader.setText("");
+		AssetManager am = this.getAssets();
+		InputStream is;
 		try {
-	        FileReader fr = new FileReader(fileName);
-	        BufferedReader br = new BufferedReader(fr);
-	        String line = null;
-	        try {
-	        	while((line = br.readLine()) != null)
-	        	{
-	        	    reader.append(line);
-	        	    reader.append("\n");
-	        	}
-	        } catch (IOException e) {
-	            // TODO Auto-generated catch block
+			is = am.open(filename);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		    String line = null;
+		    try 
+		    {
+		       	while((line = br.readLine()) != null)
+		       	{
+		       	    reader.append(line);
+		       	    reader.append("\n");
+		       	}
+		    } catch (IOException e) {
 	            e.printStackTrace();
 	        }
-	    } catch (FileNotFoundException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

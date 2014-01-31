@@ -11,15 +11,17 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
 
-		<TextView style="?android:textAppearanceMedium"
-	    android:id="@+id/readerView"	
-    	android:padding="5dp"
-    	android:lineSpacingMultiplier="1.2"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="" />
+        <TextView
+            android:id="@+id/readerView"
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.2"
+            android:padding="5dp" />
     </ScrollView>
 
 </RelativeLayout>

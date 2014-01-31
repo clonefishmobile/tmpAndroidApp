@@ -1,24 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item android:id="@+id/action_expand"
-          android:icon="@drawable/ic_action_expand"
-          android:title="@string/action_expand"
-          android:showAsAction="always" >
-          <menu>
-          		<item android:id="@+id/common"
-                  	  android:title="@string/common" />
-            	<item android:id="@+id/strategy"
-                  	  android:title="@string/strategy" />
-            	<item android:id="@+id/takeAndRun"
-                  	  android:title="@string/takeAndRun" />
-            	<item android:id="@+id/hakimTwo"
-                  	  android:title="@string/hakimTwo" />
-            	<item android:id="@+id/trends"
-                  	  android:title="@string/trends" />
-            	<item android:id="@+id/martingeil"
-                  	  android:title="@string/martingeil" />
-		  </menu>
-    </item>  
+ 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

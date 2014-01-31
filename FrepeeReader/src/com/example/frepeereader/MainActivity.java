@@ -8,19 +8,36 @@ import java.io.InputStreamReader;
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	TextView reader;
+	private TextView reader;
+	private ScrollView scroll;
+	
+	private static final String COMMON = "common.txt";
+	private static final String STRATEGY  = "strategyOverview.txt";
+	private static final String TAKE_AND_RUN  = "takeAndRun.txt";
+	private static final String HAKIM_TWO  = "hakimTwo.txt";
+	private static final String TRENDS  = "trends.txt";
+	private static final String MARTINGEIL  = "martingeil.txt";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		reader = (TextView) findViewById(R.id.readerView);
-		showText("common.txt");
+		scroll = (ScrollView) findViewById(R.id.scrollView1);
+		showText(COMMON);
+		showText(STRATEGY);
+		showText(TAKE_AND_RUN);
+		showText(HAKIM_TWO);
+		showText(TRENDS);
+		showText(MARTINGEIL);
 	}
 
 	@Override
@@ -33,34 +50,11 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
-	    switch (item.getItemId()) 
-	    {
-	    	case R.id.common:
-	    		showText("common.txt");
-	    		return true;
-	    	case R.id.strategy:
-	    		showText("strategyOverview.txt");
-	    		return true;
-	    	case R.id.takeAndRun:
-	    		showText("takeAndRun.txt");
-	    		return true;
-	    	case R.id.hakimTwo:
-	    		showText("hakimTwo.txt");
-	    		return true;
-	    	case R.id.trends:
-	    		showText("trends.txt");
-	    		return true;
-	    	case R.id.martingeil:
-	    		showText("martingeil.txt");
-	    		return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+	    return super.onOptionsItemSelected(item);
 	}
 	    
 	private void showText(String filename)
 	{
-		reader.setText("");
 		AssetManager am = this.getAssets();
 		InputStream is;
 		try {
@@ -80,5 +74,6 @@ public class MainActivity extends Activity {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		reader.append("\n");
 	}
 }

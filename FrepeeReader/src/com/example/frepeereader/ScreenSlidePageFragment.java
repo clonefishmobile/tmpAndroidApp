@@ -90,6 +90,10 @@ public class ScreenSlidePageFragment extends Fragment
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		if(getArguments().getString(ARG_FILENAME).contains("chapter_1"))
+		{
+			reader.setCompoundDrawablesWithIntrinsicBounds( R.drawable.image, R.drawable.image,  R.drawable.image,  R.drawable.image);
+		}
         return rootView;
     }
 

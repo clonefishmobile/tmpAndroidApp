@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -25,6 +28,11 @@ public class ScreenSlidePageFragment extends Fragment
      * The argument key for the page number this fragment represents.
      */
     public static final String ARG_PAGE = "page";
+    
+    /**
+     * The argument key for the image this fragment represents.
+     */
+    public static final String ARG_IMAGENAME = "image";
     
     /**
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
@@ -45,6 +53,7 @@ public class ScreenSlidePageFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(ARG_FILENAME, "docs/chapter_" + (numOfPage+1) + ".txt");
         args.putInt(ARG_PAGE, (numOfPage+1));
+        args.putString(ARG_IMAGENAME, "img/image_" + (numOfPage+1) + ".jpg");
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,10 +99,21 @@ public class ScreenSlidePageFragment extends Fragment
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		if(getArguments().getString(ARG_FILENAME).contains("chapter_1"))
-		{
-			reader.setCompoundDrawablesWithIntrinsicBounds( R.drawable.image, R.drawable.image,  R.drawable.image,  R.drawable.image);
+		
+		ImageView image = (ImageView) rootView.findViewById(R.id.image);
+		try {
+			is = am.open(getArguments().getString(ARG_IMAGENAME));
+			image.setImageBitmap(BitmapFactory.decodeStream(is));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
+		TextView basement = (TextView) rootView.findViewById(R.id.basement);
+		basement.append("ТУТ ДОЛЖНО БЫТЬ ТРИ СТРОКИ ТЕКСТА");
+		basement.append("\n");
+		basement.append("ТУТ ДОЛЖНО БЫТЬ ТРИ СТРОКИ ТЕКСТА");
+		basement.append("\n");
+		basement.append("ТУТ ДОЛЖНО БЫТЬ ТРИ СТРОКИ ТЕКСТА");
         return rootView;
     }
 

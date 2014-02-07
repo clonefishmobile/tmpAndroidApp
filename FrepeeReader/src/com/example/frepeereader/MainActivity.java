@@ -15,21 +15,30 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+/**
+ * 
+ * @author Fluffy
+ *
+ * TLDR</br>
+ * На самом деле мы тут делаем фрагменты программно, что собсно и не хорошо, и не плохо</br>
+ * ОДНАКО можно фрагментики указывать в xml и причем еще и для разных размеров экрана</br>
+ * Дела блин</br>
+ */
 public class MainActivity extends FragmentActivity 
 {
 	/**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
+     * Собсно, будет отображать контент и отвечать за анимации свайпа
      */
     private ViewPager mPager;
 
     /**
-     * The number of pages (wizard steps) to show in this demo.
+     * Количество страничек
      */
     private static int NUM_PAGES;
     
     /**
-     * The pager adapter, which provides the pages to the view pager widget.
+     * Адаптер, подсовывающий странички mPagerу
      */
     private PagerAdapter mPagerAdapter;
 
@@ -42,26 +51,19 @@ public class MainActivity extends FragmentActivity
         activity = this;
         try {
         	NUM_PAGES = getAssets().list("docs").length;
-        	Log.d("num", "" + NUM_PAGES);
-        	String[] list = getAssets().list("docs");
-        	for (String string : list) {
-        		Log.d("num", string);
-        	}
         } catch (IOException e) {
         	e.printStackTrace();
         }
 
-        // Instantiate a ViewPager and a PagerAdapter.
+        // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                // When changing pages, reset the action bar actions since they are dependent
-                // on which page is currently active. An alternative approach is to have each
-                // fragment expose actions itself (rather than the activity exposing actions),
-                // but for simplicity, the activity provides the actions in this sample.
+                //ресетим акшон бар, т.к. каждый фрагмент акшоны сам обрабатывает
+            	//но при должно желаниии обработку можно перекинуть на активити
                 invalidateOptionsMenu();
             }
         });
@@ -74,8 +76,7 @@ public class MainActivity extends FragmentActivity
 
         menu.findItem(R.id.action_previous).setEnabled(mPager.getCurrentItem() > 0);
 
-        // Add either a "next" or "finish" button to the action bar, depending on which page
-        // is currently selected.
+        // Добовлаем кнопки туда/закончить (смотря чо кажем)
         MenuItem item = menu.add(Menu.NONE, R.id.action_next, Menu.NONE,
                 (mPager.getCurrentItem() == mPagerAdapter.getCount() - 1)
                         ? R.string.action_finish
@@ -88,14 +89,12 @@ public class MainActivity extends FragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_previous:
-                // Go to the previous step in the wizard. If there is no previous step,
-                // setCurrentItem will do nothing.
+                //идем обратно (или ничо не делаем, если уже на первой страничке)
                 mPager.setCurrentItem(mPager.getCurrentItem() - 1);
                 return true;
 
             case R.id.action_next:
-                // Advance to the next step in the wizard. If there is no next step, setCurrentItem
-                // will do nothing.
+                //идем туда, или ничо не делаем, если уже на послденей страничке
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 return true;
         }
@@ -104,8 +103,7 @@ public class MainActivity extends FragmentActivity
     }
 
     /**
-     * A simple pager adapter that represents {@link ScreenSlidePageFragment} objects, in
-     * sequence.
+     * Адаптер, который кажет объекты {@link ScreenSlidePageFragment} последовательно
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {

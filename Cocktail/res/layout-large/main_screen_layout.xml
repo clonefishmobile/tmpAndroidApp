@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <fragment
+        android:id="@+id/video_frag"
+        class="com.example.cocktail.fragments.VideoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/cocktail_info_frag"
+        android:layout_toStartOf="@id/cocktail_info_frag"
+        tools:layout="@layout/video_fragment" 
+        >
+    </fragment>
+
+    <fragment
+        android:id="@+id/receipe_frag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/cocktail_info_frag"
+        android:layout_toStartOf="@id/cocktail_info_frag"
+        android:layout_below="@id/video_frag"
+        tools:layout="@layout/recepie_fragment" 
+        >
+    </fragment>
+
+    <fragment
+        android:id="@+id/cocktail_info_frag"
+        class="com.example.cocktail.fragments.CocktailInfoFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        tools:layout="@layout/cocktail_info_fragment"
+        >
+    </fragment>
+
+</RelativeLayout>

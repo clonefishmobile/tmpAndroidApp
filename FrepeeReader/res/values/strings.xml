@@ -6,5 +6,6 @@
     <string name="action_previous">Previous</string>
     <string name="action_next">Next</string>
     <string name="action_finish">Finish</string>
+    <string name="exp_app_name">ExperimentalReader</string>
 
 </resources>

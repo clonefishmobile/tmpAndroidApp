@@ -7,39 +7,31 @@
     android:orientation="horizontal" >
 
     <fragment
-        android:id="@+id/video_frag"
-        class="com.example.cocktail.fragments.VideoFragment"
+        android:id="@+id/fragment1"
+        android:name="com.example.cocktail.fragments.VideoFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/fragment2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/cocktail_info_frag"
-        android:layout_toStartOf="@id/cocktail_info_frag"
-        tools:layout="@layout/video_fragment" 
-        >
-    </fragment>
+        android:layout_alignRight="@+id/fragment2" />
 
     <fragment
-        android:id="@+id/receipe_frag"
+        android:id="@+id/fragment2"
+        android:name="com.example.cocktail.fragments.RecepieFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/cocktail_info_frag"
-        android:layout_toStartOf="@id/cocktail_info_frag"
-        android:layout_below="@id/video_frag"
-        tools:layout="@layout/recepie_fragment" 
-        >
-    </fragment>
+        android:layout_alignParentLeft="true"/>
 
     <fragment
-        android:id="@+id/cocktail_info_frag"
-        class="com.example.cocktail.fragments.CocktailInfoFragment"
+        android:id="@+id/fragment3"
+        android:name="com.example.cocktail.fragments.CocktailInfoFragment"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        tools:layout="@layout/cocktail_info_fragment"
-        >
-    </fragment>
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/fragment1" />
 
 </RelativeLayout>

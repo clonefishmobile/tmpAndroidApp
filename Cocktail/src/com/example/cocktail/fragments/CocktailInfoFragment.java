@@ -1,8 +1,14 @@
 package com.example.cocktail.fragments;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import com.example.cocktail.R;
 
 import android.app.Fragment;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -13,10 +19,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class CocktailInfoFragment extends Fragment
 {
 	private ViewGroup rootView;
+	private TextView header;
+	private TextView tags;
+	private TextView cocktail_info;
 	
 	private static final String TAG = "CocktailInfoFragment";
 	@Override
@@ -24,15 +34,18 @@ public class CocktailInfoFragment extends Fragment
 	{
 		Log.d(TAG, "view created");
 		rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_info_fragment, container, false); 
-		
+		header = (TextView) rootView.findViewById(R.id.header);
+		tags = (TextView) rootView.findViewById(R.id.tags);
+		cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_info);
 		return rootView;
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
+		super.onActivityCreated(savedInstanceState);
 		setMinimumToHalf();
-		rootView.setBackgroundColor(Color.RED);
+		setInfo("docs/brain_fuck.txt");
 	}
 	
 	private void setMinimumToHalf()
@@ -57,5 +70,33 @@ public class CocktailInfoFragment extends Fragment
 		}
 		
 		rootView.setMinimumWidth(measuredWidth/2);
+	}
+	
+	private void setInfo(String infoFilePath)
+	{
+		AssetManager am = getActivity().getAssets();
+		InputStream is;
+		
+		try {
+			//открываем стрим для файлика
+			is = am.open(infoFilePath);
+			//делаем буфер чтения
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		    String line = null;
+		    try 
+		    {
+		    	//если чет прочитали
+		       	while((line = br.readLine()) != null)
+		       	{
+		       		// фигачим все считаное безобразие в отображалку текста
+		       		cocktail_info.append(line);
+		       		cocktail_info.append("\n");
+		       	}
+		    } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

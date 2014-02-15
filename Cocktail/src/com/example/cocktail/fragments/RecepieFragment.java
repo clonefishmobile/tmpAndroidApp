@@ -66,7 +66,7 @@ public class RecepieFragment extends Fragment
 		    measuredHeight = d.getHeight();
 		}
 		
-		rootView.setMinimumHeight(measuredHeight/2);
+//		rootView.setMinimumHeight(measuredHeight/2);
 		rootView.setMinimumWidth(measuredWidth/2);
 	}
 	

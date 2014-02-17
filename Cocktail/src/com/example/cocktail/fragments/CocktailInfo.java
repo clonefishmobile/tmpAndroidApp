@@ -5,55 +5,48 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.example.cocktail.R;
-
-import android.app.Fragment;
+import android.app.Activity;
 import android.content.res.AssetManager;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class CocktailInfoFragment extends Fragment
+import com.example.cocktail.R;
+
+public class CocktailInfo
 {
 	private ViewGroup rootView;
 	private TextView header;
 	private TextView tags;
 	private TextView cocktail_info;
 	
-	private static final String TAG = "CocktailInfoFragment";
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+	private static final String TAG = "CocktailInfo";
+	
+	public CocktailInfo(ViewGroup viewGroup, Activity activity)
 	{
-		Log.d(TAG, "view created");
-		rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_info_fragment, container, false); 
+		this.rootView = viewGroup;
 		header = (TextView) rootView.findViewById(R.id.header);
 		tags = (TextView) rootView.findViewById(R.id.tags);
 		cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_info);
+		setMinimumToHalf(activity);
+		setInfo("docs/brain_fuck.txt", activity);
+	}
+	
+	public ViewGroup getView()
+	{
 		return rootView;
 	}
 	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) 
-	{
-		super.onActivityCreated(savedInstanceState);
-		setMinimumToHalf();
-		setInfo("docs/brain_fuck.txt");
-	}
-	
-	private void setMinimumToHalf()
+	private void setMinimumToHalf(Activity activity)
 	{
 		int measuredWidth = 0;
 		int measuredHeight = 0;
 		Point size = new Point();
-		WindowManager w = getActivity().getWindowManager();
+		WindowManager w = activity.getWindowManager();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2)
 		{
@@ -72,9 +65,9 @@ public class CocktailInfoFragment extends Fragment
 		rootView.setMinimumWidth(measuredWidth/2);
 	}
 	
-	private void setInfo(String infoFilePath)
+	private void setInfo(String infoFilePath, Activity activity)
 	{
-		AssetManager am = getActivity().getAssets();
+		AssetManager am = activity.getAssets();
 		InputStream is;
 		
 		try {
@@ -98,5 +91,6 @@ public class CocktailInfoFragment extends Fragment
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		Log.d(TAG, "info seted");
 	}
 }

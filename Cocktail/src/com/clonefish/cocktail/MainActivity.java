@@ -29,13 +29,10 @@ public class MainActivity extends FragmentActivity
      */
     private PagerAdapter mPagerAdapter;
 
-    public static MainActivity activity;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        activity = this;
         NUM_PAGES = 5;
         // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);

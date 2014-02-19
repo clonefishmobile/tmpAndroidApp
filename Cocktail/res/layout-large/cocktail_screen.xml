@@ -15,14 +15,14 @@
 	    <LinearLayout
 	        android:id="@+id/video"
 	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
+	        android:layout_height="wrap_content"
 	        android:orientation="horizontal">
 	    </LinearLayout>
 	    
 	    <LinearLayout 
 	        android:id="@+id/recepie"
 	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
+	        android:layout_height="wrap_content"
 	        android:orientation="vertical">
 	    </LinearLayout>
 	    
@@ -37,4 +37,3 @@
 	    >
 	</LinearLayout>
 </LinearLayout>
-

@@ -52,13 +52,11 @@ public class CocktailInfoFragment extends Fragment
 	@Override
 	public void onSaveInstanceState(Bundle outState) 
 	{
-		setInfo("docs/brain_fuck.txt");
 		super.onSaveInstanceState(outState);
 	}
 	
 	private void setInfo(String infoFilePath)
 	{
-		cocktail_info.setText("все говно ");
 		AssetManager am = getActivity().getAssets();
 		InputStream is;
 

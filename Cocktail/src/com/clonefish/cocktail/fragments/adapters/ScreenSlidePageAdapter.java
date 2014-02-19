@@ -3,6 +3,7 @@ package com.clonefish.cocktail.fragments.adapters;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,10 @@ public class ScreenSlidePageAdapter extends Fragment
      */
     private int mPageNumber;
     
+    private YouTubePlayerSupportFragment videoFragment;
+    private RecepieFragment recepie;
+    private CocktailInfoFragment cockteilInfo;
+    
     /**
      * Факторка для фрагментов. Делает фрагмент с заданым номером странички
      */
@@ -66,13 +71,21 @@ public class ScreenSlidePageAdapter extends Fragment
     {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
-        YouTubePlayerSupportFragment videoFragment = YouTubePlayerSupportFragment.newInstance();
-        videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+        if(videoFragment == null)
+        {
+        	videoFragment = new YouTubePlayerSupportFragment();
+        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+        }
+        
+        if(recepie == null) recepie = new RecepieFragment();
+        
+        if(cockteilInfo == null) cockteilInfo = new CocktailInfoFragment();
+        
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.
-        	add(R.id.recepie, new RecepieFragment()).
         	add(R.id.video, videoFragment).
-        	add(R.id.place_for_cocktail_info, new CocktailInfoFragment()).
+        	add(R.id.recepie, recepie).
+        	add(R.id.place_for_cocktail_info, cockteilInfo).
         	commit();
     }
 
@@ -83,7 +96,25 @@ public class ScreenSlidePageAdapter extends Fragment
         rootView.setId(mPageNumber);
         return rootView;
     }
-
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+    	super.onSaveInstanceState(outState);
+    	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+    	transaction.
+    		remove(videoFragment).
+    		remove(recepie).
+    		remove(cockteilInfo).
+    		commit();
+    }
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	videoFragment = null;
+    	recepie = null;
+    	cockteilInfo = null;
+    }
     /**
      * Returns the page number represented by this fragment object.
      */
@@ -97,6 +128,7 @@ public class ScreenSlidePageAdapter extends Fragment
 		@Override
 		public void onInitializationFailure(Provider provider, YouTubeInitializationResult msg) {
 			Toast.makeText(getActivity(), msg.toString(), Toast.LENGTH_LONG).show();
+			Log.e("video", "all bad" + videoFragment.getParentFragment().getId());
 		}
 		
 		@Override
@@ -104,6 +136,7 @@ public class ScreenSlidePageAdapter extends Fragment
 			if (!wasRestored) {
 				player.cueVideo("0_u_DeUOBj0");
 			}
+			Log.i("video", "all good " + videoFragment.getParentFragment().getId());
 		}
 	}
 }

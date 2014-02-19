@@ -1,16 +1,23 @@
-package com.example.cocktail.fragments.adapters;
+package com.clonefish.cocktail.fragments.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.example.cocktail.R;
-import com.example.cocktail.fragments.CocktailInfo;
-import com.example.cocktail.fragments.Recepie;
+import com.clonefish.cocktail.R;
+import com.clonefish.cocktail.fragments.CocktailInfoFragment;
+import com.clonefish.cocktail.fragments.RecepieFragment;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
-public class ScreenSlidePageAdapter extends Fragment 
+public class ScreenSlidePageAdapter extends Fragment
 {
 	/**
      * Ключик для аргумента, в которым сохраним имя файла который отобразит фрагмент
@@ -50,21 +57,30 @@ public class ScreenSlidePageAdapter extends Fragment
         return fragment;
     }
 
-    public ScreenSlidePageAdapter() {
+    public ScreenSlidePageAdapter() 
+    {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
+        YouTubePlayerSupportFragment videoFragment = YouTubePlayerSupportFragment.newInstance();
+        videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.
+        	add(R.id.recepie, new RecepieFragment()).
+        	add(R.id.video, videoFragment).
+        	add(R.id.place_for_cocktail_info, new CocktailInfoFragment()).
+        	commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Берем корневой вью
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_screen, container, false);
-        rootView = new CocktailInfo(rootView, getActivity()).getView();
-        rootView = new Recepie(rootView, getActivity()).getView();
+        rootView.setId(mPageNumber);
         return rootView;
     }
 
@@ -74,4 +90,20 @@ public class ScreenSlidePageAdapter extends Fragment
     public int getPageNumber() {
         return mPageNumber;
     }
+
+	
+	private class YouTubeInitListener implements OnInitializedListener
+	{
+		@Override
+		public void onInitializationFailure(Provider provider, YouTubeInitializationResult msg) {
+			Toast.makeText(getActivity(), msg.toString(), Toast.LENGTH_LONG).show();
+		}
+		
+		@Override
+		public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
+			if (!wasRestored) {
+				player.cueVideo("0_u_DeUOBj0");
+			}
+		}
+	}
 }

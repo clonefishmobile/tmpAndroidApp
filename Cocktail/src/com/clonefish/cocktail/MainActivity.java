@@ -1,8 +1,7 @@
-package com.example.cocktail;
+package com.clonefish.cocktail;
 
-import com.example.cocktail.fragments.ZoomOutPageTransformer;
-import com.example.cocktail.fragments.adapters.ScreenSlidePageAdapter;
-
+import com.clonefish.cocktail.fragments.ZoomOutPageTransformer;
+import com.clonefish.cocktail.fragments.adapters.ScreenSlidePageAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,31 +10,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-/*
- * TODO ПРО СВАЙП!!!
- * Вообщем, надо разобраться с свайпом, но уже поздно.
- * А мысли записать надо.
- * Вообщем так.
- * 		1. Создать класс адаптер, для страничек для свайпа 
- * (они у мобилок и таблеток разные как бы будут)
- * ОТ этого класса будут наследоваться все последующие странички.
- * 		2. В зависимости от того, что у нас - мобилка или таблетка - на ViewPager
- * будут пихаться соответствующие странички ( а так как они наследуються от одного адаптера - то пох)
- * 		3. Научиться пихать соответствующий лайаут в зависимости от размеров экрана
- * 		4. ...
- */
 import android.view.MenuItem;
 
-/**
- * 
- * @author Fluffy
- *
- * TLDR</br>
- * На самом деле мы тут делаем фрагменты программно, что собсно и не хорошо, и не плохо</br>
- * ОДНАКО можно фрагментики указывать в xml и причем еще и для разных размеров экрана</br>
- * Дела блин</br>
- */
-public class MainActivity extends FragmentActivity 
+public class MainActivity extends FragmentActivity
 {
 	/**
      * Собсно, будет отображать контент и отвечать за анимации свайпа
@@ -72,7 +49,7 @@ public class MainActivity extends FragmentActivity
                 invalidateOptionsMenu();
             }
         });
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+//        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
     @Override

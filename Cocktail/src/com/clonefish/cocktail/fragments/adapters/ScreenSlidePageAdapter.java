@@ -1,5 +1,7 @@
 package com.clonefish.cocktail.fragments.adapters;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
 import com.clonefish.cocktail.fragments.CocktailInfoFragment;
 import com.clonefish.cocktail.fragments.RecepieFragment;
@@ -51,12 +54,8 @@ public class ScreenSlidePageAdapter extends Fragment
     {
         ScreenSlidePageAdapter fragment = new ScreenSlidePageAdapter();
         Bundle args = new Bundle();
-        //привязываем к фрагменту файлик аргументом
-        args.putString(ARG_FILENAME, "docs/chapter_" + (numOfPage+1) + ".txt");
         //аналогично номер странички
         args.putInt(ARG_PAGE, (numOfPage+1));
-        //и картинку
-        args.putString(ARG_IMAGENAME, "img/image_" + (numOfPage+1) + ".jpg");
         //и все сохраняем
         fragment.setArguments(args);
         return fragment;
@@ -133,8 +132,14 @@ public class ScreenSlidePageAdapter extends Fragment
 		
 		@Override
 		public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
+			
+			SQLiteDatabase db = MainActivity.activity.dbHelper.getWritableDatabase();
+			Cursor c = db.query("mytable", null, null, null, null, null, null);
+			
+			c.moveToPosition(mPageNumber + 1);
+			
 			if (!wasRestored) {
-				player.cueVideo("0_u_DeUOBj0");
+				player.cueVideo(c.getString(c.getColumnIndex("video_id")));
 			}
 			Log.i("video", "all good " + videoFragment.getParentFragment().getId());
 		}

@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
 
 public class CocktailInfoFragment extends Fragment
@@ -46,7 +49,7 @@ public class CocktailInfoFragment extends Fragment
 	{
 		Log.i(TAG, "activ created");
 		super.onActivityCreated(savedInstanceState);
-		setInfo("docs/brain_fuck.txt");
+//		setInfo("docs/brain_fuck.txt");
 	}
 	
 	@Override
@@ -55,7 +58,7 @@ public class CocktailInfoFragment extends Fragment
 		super.onSaveInstanceState(outState);
 	}
 	
-	private void setInfo(String infoFilePath)
+	public void setInfo(String infoFilePath)
 	{
 		AssetManager am = getActivity().getAssets();
 		InputStream is;
@@ -82,5 +85,15 @@ public class CocktailInfoFragment extends Fragment
 			e1.printStackTrace();
 		}
 		Log.e(TAG, "info setted");
+	}
+	
+	public void setInfo(int id)
+	{
+		SQLiteDatabase db = MainActivity.activity.dbHelper.getWritableDatabase();
+		Cursor c = db.query("mytable", null, null, null, null, null, null);
+		
+		c.moveToPosition(id + 1);
+		cocktail_info.setText(c.getString(c.getColumnIndex("cocktail_name")));
+		header.setText(c.getString(c.getColumnIndex("cocktail_info")));
 	}
 }

@@ -1,7 +1,8 @@
 package com.clonefish.cocktail;
 
-import com.clonefish.cocktail.fragments.ZoomOutPageTransformer;
-import com.clonefish.cocktail.fragments.adapters.ScreenSlidePageAdapter;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,8 +10,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.clonefish.cocktail.database.DBHelper;
+import com.clonefish.cocktail.fragments.adapters.ScreenSlidePageAdapter;
 
 public class MainActivity extends FragmentActivity
 {
@@ -28,12 +33,17 @@ public class MainActivity extends FragmentActivity
      * Адаптер, подсовывающий странички mPagerу
      */
     private PagerAdapter mPagerAdapter;
-
+    
+    public DBHelper dbHelper;
+    
+    public static MainActivity activity;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        NUM_PAGES = 5;
+        createDB();
+        activity = this;
         // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -61,6 +71,16 @@ public class MainActivity extends FragmentActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() 
+    {
+    	super.onDestroy();
+    	SQLiteDatabase db = dbHelper.getWritableDatabase();
+    	 Log.d("CREATE_DB", "--- Clear mytable: ---");
+         // удаляем все записи
+         int clearCount = db.delete("mytable", null, null);
+         Log.d("CREATE_DB", "deleted rows count = " + clearCount);
+    }
     /**
      * Адаптер, который кажет объекты {@link ScreenSlidePageFragment} последовательно
      */
@@ -78,5 +98,64 @@ public class MainActivity extends FragmentActivity
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+    
+    private void createDB()
+    {
+//    		mytable
+//  	    cocktail_id
+//  	    cocktail_name
+//  	    video_id
+//  	    cocktail_info
+    	
+    	
+    	dbHelper = new DBHelper(this);
+    	
+        String[] video = {"0_u_DeUOBj0", "9WZhBBy5SwE", "zCde1kb4_zw", "9yK0bR3waOg"};
+        String[] cockteil = {"Оригами", "Огуречный рома", "Гарниш", "Клубничный веер"};
+        String[] cockteil_text = {
+        		"Источник безграничной книжной романтики и неиссякаемого аппетита во время званных ужинов. " +
+        		"Получается путем перегонки сидра из разных сортов яблок, выдержанного в дубовых бочках не менее 2 лет." +
+        		"Как говорит героиня Ремарка, - кальвадос скорее вдыхаешь, чем пьешь и, попробовав один раз, ты мечтаешь об этом." +
+        		"Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
+        		"40%, 700 мл, Франция.", 
+        		"Источник безграничной книжной романтики и неиссякаемого аппетита во время званных ужинов. " +
+                "Получается путем перегонки сидра из разных сортов яблок, выдержанного в дубовых бочках не менее 2 лет." +
+                "Как говорит героиня Ремарка, - кальвадос скорее вдыхаешь, чем пьешь и, попробовав один раз, ты мечтаешь об этом." +
+                "Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
+                "40%, 700 мл, Франция.", 
+                "Источник безграничной книжной романтики и неиссякаемого аппетита во время званных ужинов. " +
+                "Получается путем перегонки сидра из разных сортов яблок, выдержанного в дубовых бочках не менее 2 лет." +
+                "Как говорит героиня Ремарка, - кальвадос скорее вдыхаешь, чем пьешь и, попробовав один раз, ты мечтаешь об этом." +
+                "Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
+                "40%, 700 мл, Франция.", 
+                "Источник безграничной книжной романтики и неиссякаемого аппетита во время званных ужинов. " +
+                "Получается путем перегонки сидра из разных сортов яблок, выдержанного в дубовых бочках не менее 2 лет." +
+                "Как говорит героиня Ремарка, - кальвадос скорее вдыхаешь, чем пьешь и, попробовав один раз, ты мечтаешь об этом." +
+                "Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
+                "40%, 700 мл, Франция."};
+        
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        for(int i = 0; i < 4; i++)
+        {
+        	// создаем объект для данных
+        	ContentValues cv = new ContentValues();
+        	
+        	// подключаемся к БД
+        	
+        	cv.put("cocktail_name", cockteil[i]);
+        	cv.put("video_id", video[i]);
+        	cv.put("cocktail_info", cockteil_text[i]);
+        	
+        	long rowID = db.insert("mytable", null, cv);
+            Log.d("CREATE_DB", "row inserted, ID = " + rowID);
+        }
+        
+        Cursor c = db.query("mytable", null, null, null, null, null, null);
+        
+     	c.moveToLast();
+     	NUM_PAGES = c.getPosition(); 
+        
+        dbHelper.close();
     }
 }

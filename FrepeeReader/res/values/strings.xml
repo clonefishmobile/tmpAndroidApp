@@ -3,6 +3,9 @@
 
     <string name="app_name">FrepeeReader</string>
     <string name="action_settings">Settings</string>
-    <string name="loadFile">Load file as Freppe do</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="action_finish">Finish</string>
+    <string name="exp_app_name">ExperimentalReader</string>
 
 </resources>

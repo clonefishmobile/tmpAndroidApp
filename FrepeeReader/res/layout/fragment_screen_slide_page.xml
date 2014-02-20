@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/header"
+        style="?android:textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" 
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TableLayout 
+        android:layout_above="@id/basement"
+        android:layout_below="@id/header"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:id="@+id/tableLayout1"
+		android:layout_centerHorizontal="true">
+	    
+		<TableRow 
+			android:id="@+id/tableRow1" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+
+			<ImageView
+			    android:id="@+id/image"
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="0.5"/>
+			
+			<ScrollView
+		        android:id="@+id/scrollView1"
+		        android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0.5">
+				<TextView 
+		            android:id="@+id/text"
+		            style="?android:textAppearanceMedium"
+		            android:lineSpacingMultiplier="1.2"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content" />
+			</ScrollView>
+			
+		</TableRow>
+		
+	</TableLayout> 
+
+    <TextView
+        android:id="@+id/basement"
+        style="?android:textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" 
+        android:layout_alignParentBottom="true"
+    	android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

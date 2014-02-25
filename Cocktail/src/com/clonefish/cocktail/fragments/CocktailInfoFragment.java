@@ -89,11 +89,6 @@ public class CocktailInfoFragment extends Fragment
 	
 	public void setInfo(int id)
 	{
-		SQLiteDatabase db = MainActivity.activity.dbHelper.getWritableDatabase();
-		Cursor c = db.query("mytable", null, null, null, null, null, null);
 		
-		c.moveToPosition(id + 1);
-		cocktail_info.setText(c.getString(c.getColumnIndex("cocktail_name")));
-		header.setText(c.getString(c.getColumnIndex("cocktail_info")));
 	}
 }

@@ -1,13 +1,5 @@
 package com.clonefish.cocktail.fragments;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import android.content.res.AssetManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -36,7 +28,7 @@ public class CocktailInfoFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		Log.d(TAG, "view created");
+		Log.i(TAG, "-----view created-----");
 		rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_info_fragment, container, false); 
 		header = (TextView) rootView.findViewById(R.id.header);
 		tags = (TextView) rootView.findViewById(R.id.tags);
@@ -47,7 +39,7 @@ public class CocktailInfoFragment extends Fragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
-		Log.i(TAG, "activ created");
+		Log.i(TAG, "-----activ created-----");
 		super.onActivityCreated(savedInstanceState);
 //		setInfo("docs/brain_fuck.txt");
 	}
@@ -58,37 +50,9 @@ public class CocktailInfoFragment extends Fragment
 		super.onSaveInstanceState(outState);
 	}
 	
-	public void setInfo(String infoFilePath)
-	{
-		AssetManager am = getActivity().getAssets();
-		InputStream is;
-
-		try {
-			//открываем стрим для файлика
-			is = am.open(infoFilePath);
-			//делаем буфер чтения
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		    String line = null;
-		    try 
-		    {
-		    	//если чет прочитали
-		       	while((line = br.readLine()) != null)
-		       	{
-		       		// фигачим все считаное безобразие в отображалку текста
-		       		cocktail_info.append(line);
-		       		cocktail_info.append("\n");
-		       	}
-		    } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		Log.e(TAG, "info setted");
-	}
-	
 	public void setInfo(int id)
 	{
-		
+		header.setText(MainActivity.getCocktailList().get(id).name);
+		cocktail_info.setText(MainActivity.getCocktailList().get(id).text);
 	}
 }

@@ -3,6 +3,7 @@ package com.clonefish.cocktail;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,9 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.clonefish.cocktail.database.DB;
@@ -26,6 +30,16 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     private SimpleCursorAdapter scAdapter;
     private static ArrayList<Cocktail> cocktailArray = new ArrayList<Cocktail>();
     
+    public static final String POSITION = "position";
+    public static final String NUM_PAGES = "num";
+    
+    /*
+     * АХТУНГ АЛЯРМ!
+     * ЕСЛИ В ПЕРВЫЙ РАЗ ЗАПУСКАЕТЬСЯ ПРИЛОЖЕНИЕ НА ДЕВАЙСЕ
+     * ТО НУЖНО РАСКОМЕНТИТЬ createDB() в onСreate чтобы дб сделать
+     */
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +49,11 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         
         db = new DB(this);
         db.open();
+        /*
+         * АХТУНГ АЛЯРМ!
+         * ЕСЛИ В ПЕРВЫЙ РАЗ ЗАПУСКАЕТЬСЯ ПРИЛОЖЕНИЕ НА ДЕВАЙСЕ
+         * ТО НУЖНО РАСКОМЕНТИТЬ createDB() в onСreate чтобы дб сделать
+         */
 //        createDB();
         
         // формируем столбцы сопоставления
@@ -45,7 +64,23 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         scAdapter = new SimpleCursorAdapter(this, R.layout.item, null, from, to, 0);
         cocktailList = (ListView) findViewById(R.id.cocktail_list);
         cocktailList.setAdapter(scAdapter);
-
+        cocktailList.setOnItemClickListener(new OnItemClickListener()
+        {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+			{
+				//длеаем интент для запуска новой активити
+				Intent intent = new Intent(activity, CocktailViewActivity.class);
+				//сохроняем туда номер позиции клика (соответствует номеру странички на PageView
+				intent.putExtra(POSITION, position);
+				//сохроняем туда количество страниц (элементов в ListView соответственно)
+				intent.putExtra(NUM_PAGES, cocktailArray.size());
+				//запускаем новую активити
+				startActivity(intent);
+			}
+        	
+        });
+        
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
     }

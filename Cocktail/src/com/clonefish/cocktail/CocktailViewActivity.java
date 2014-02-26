@@ -10,7 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.clonefish.cocktail.fragments.adapters.ScreenSlidePageAdapter;
+import com.clonefish.cocktail.fragments.PageFragment;
+
 
 public class CocktailViewActivity extends FragmentActivity
 {
@@ -35,20 +36,13 @@ public class CocktailViewActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail);
+        NUM_PAGES = getIntent().getIntExtra(MainActivity.NUM_PAGES, 0);
         activity = this;
         // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                //ресетим акшон бар, т.к. каждый фрагмент акшоны сам обрабатывает
-            	//но при должно желаниии обработку можно перекинуть на активити
-                invalidateOptionsMenu();
-            }
-        });
-//        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mPager.setCurrentItem(getIntent().getIntExtra(MainActivity.POSITION, 0), true);
     }
 
     @Override
@@ -78,7 +72,7 @@ public class CocktailViewActivity extends FragmentActivity
 
         @Override
         public Fragment getItem(int position) {
-            return ScreenSlidePageAdapter.create(position);
+            return PageFragment.create(position);
         }
 
         @Override

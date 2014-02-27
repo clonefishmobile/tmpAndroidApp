@@ -1,11 +1,17 @@
 package com.clonefish.cocktail.fragments;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableRow;
 
 import com.clonefish.cocktail.R;
@@ -31,5 +37,36 @@ public class RecepieFragment extends Fragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
+		setImages();
+	}
+	
+	private void setImages()
+	{
+		ImageView[] images = {
+			(ImageView) row1.findViewById(R.id.imageView1),
+			(ImageView) row1.findViewById(R.id.imageView2),
+			(ImageView) row1.findViewById(R.id.imageView3),
+			(ImageView) row1.findViewById(R.id.imageView4),
+			(ImageView) row2.findViewById(R.id.imageView5),
+			(ImageView) row2.findViewById(R.id.imageView6),
+			(ImageView) row2.findViewById(R.id.imageView7),
+			(ImageView) row2.findViewById(R.id.imageView8)
+		};
+		int i = 1;
+		for (ImageView imageView : images) 
+		{
+			AssetManager am = getActivity().getAssets();
+			InputStream is;
+
+			try {
+				//ох уж ети стримы
+				is = am.open("img/"+ i +".png");
+				//фигачим картинку как битмап через фабрику декодированием потока
+				imageView.setImageBitmap(BitmapFactory.decodeStream(is));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			i++;
+		}
 	}
 }

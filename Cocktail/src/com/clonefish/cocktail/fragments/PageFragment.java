@@ -105,7 +105,7 @@ public class PageFragment extends Fragment
         
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.
-	        add(R.id.video, videoFragment).
+	        add(R.id.video, videoFragment, "abirvalg" + mPageNumber).
 	        add(R.id.recepie, recepie).
 	        add(R.id.place_for_cocktail_info, cockteilInfo).
 	        commit();
@@ -123,7 +123,7 @@ public class PageFragment extends Fragment
     public void onStart() {
     	super.onStart();
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " started-----");
-        cockteilInfo.setInfo(mPageNumber); 
+        cockteilInfo.setInfo(mPageNumber);
     }
     
     @Override
@@ -182,11 +182,14 @@ public class PageFragment extends Fragment
 		@Override
 		public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) 
 		{
-			if (!wasRestored)
-			{
-				videoPlayer = player;
-				videoPlayer.cueVideo(video_id);
-			}
+			Log.w("SSPA", "-----fragment "+ mPageNumber + " vide player init----- ");
+			videoPlayer = player;
+			onPlayerInit();
 		}
+	}
+	
+	private void onPlayerInit()
+	{
+		videoPlayer.cueVideo(video_id);
 	}
 }

@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.TextView;
 
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
+import com.clonefish.cocktail.utils.TextJustifyUtils;
 
 public class CocktailInfoFragment extends Fragment
 {

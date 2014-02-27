@@ -21,6 +21,11 @@ import android.widget.ListView;
 
 import com.clonefish.cocktail.database.DB;
 
+/**
+ * АХТУНГ АЛЯРМ!
+ * ЕСЛИ В ПЕРВЫЙ РАЗ ЗАПУСКАЕТЬСЯ ПРИЛОЖЕНИЕ НА ДЕВАЙСЕ
+ * ТО НУЖНО РАСКОМЕНТИТЬ createDB() в onСreate чтобы дб сделать
+ */
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
 {
     public static MainActivity activity;
@@ -33,13 +38,14 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     public static final String POSITION = "position";
     public static final String NUM_PAGES = "num";
     
-    /*
+    
+    
+    
+    /**
      * АХТУНГ АЛЯРМ!
      * ЕСЛИ В ПЕРВЫЙ РАЗ ЗАПУСКАЕТЬСЯ ПРИЛОЖЕНИЕ НА ДЕВАЙСЕ
      * ТО НУЖНО РАСКОМЕНТИТЬ createDB() в onСreate чтобы дб сделать
      */
-    
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

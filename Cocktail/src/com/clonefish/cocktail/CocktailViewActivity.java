@@ -1,5 +1,8 @@
 package com.clonefish.cocktail;
 
+
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -7,10 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.clonefish.cocktail.fragments.PageFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 
 public class CocktailViewActivity extends FragmentActivity
@@ -43,6 +49,28 @@ public class CocktailViewActivity extends FragmentActivity
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(getIntent().getIntExtra(MainActivity.POSITION, 0), true);
+        VideoManager.getInstance().init(mPager.getCurrentItem(), NUM_PAGES);
+        mPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) 
+			{
+				Log.d("ViewPager", "-----pageSelected-----");
+				VideoManager.getInstance().onItemChanged(arg0);
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
     }
 
     @Override
@@ -80,4 +108,11 @@ public class CocktailViewActivity extends FragmentActivity
             return NUM_PAGES;
         }
     }
+	public void onPlayerRelese(int pageId) 
+	{
+		List<Fragment> list = getSupportFragmentManager().getFragments();
+		FragmentManager cfm = list.get(pageId).getChildFragmentManager();
+		List<Fragment> cList = cfm.getFragments();
+		YouTubePlayerSupportFragment fragment = (YouTubePlayerSupportFragment) cList.get(0);
+	}
 }

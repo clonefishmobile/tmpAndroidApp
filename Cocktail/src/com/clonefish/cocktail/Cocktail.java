@@ -19,7 +19,8 @@ public class Cocktail {
 	 * @param text
 	 * @param video_id
 	 */
-	public Cocktail(String name, String[] tags, String text, String video_id) {
+	public Cocktail(String name, String[] tags, String text, String video_id) 
+	{
 		this.name = name;
 		this.tags = tags;
 		this.text = text;

@@ -1,4 +1,4 @@
-package com.clonefish.cocktail.fragments;
+package com.clonefish.cocktail.fragments.transformers;
 
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.PageTransformer;

@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.clonefish.cocktail.fragments.PageFragment;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 
 public class CocktailViewActivity extends FragmentActivity
@@ -50,13 +49,26 @@ public class CocktailViewActivity extends FragmentActivity
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(getIntent().getIntExtra(MainActivity.POSITION, 0), true);
         VideoManager.getInstance().init(mPager.getCurrentItem(), NUM_PAGES);
-        mPager.setOnPageChangeListener(new OnPageChangeListener() {
+        mPager.setOnPageChangeListener(new OnPageChangeListener() 
+        {
 			
 			@Override
-			public void onPageSelected(int arg0) 
+			public void onPageSelected(int pageNumber) 
 			{
 				Log.d("ViewPager", "-----pageSelected-----");
-				VideoManager.getInstance().onItemChanged(arg0);
+				VideoManager.getInstance().onItemChanged(pageNumber);
+				List<Fragment> list = activity.getSupportFragmentManager().getFragments();
+				for (int i = 0; i< list.size(); i++) 
+				{
+					final PageFragment pFrag = (PageFragment) list.get(i);
+					new Runnable() {
+						
+						@Override
+						public void run() {
+							if(pFrag != null) pFrag.onSetCurriet();
+						}
+					}.run();
+				}
 			}
 			
 			@Override
@@ -99,7 +111,8 @@ public class CocktailViewActivity extends FragmentActivity
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(int position) 
+        {
             return PageFragment.create(position);
         }
 
@@ -108,11 +121,4 @@ public class CocktailViewActivity extends FragmentActivity
             return NUM_PAGES;
         }
     }
-	public void onPlayerRelese(int pageId) 
-	{
-		List<Fragment> list = getSupportFragmentManager().getFragments();
-		FragmentManager cfm = list.get(pageId).getChildFragmentManager();
-		List<Fragment> cList = cfm.getFragments();
-		YouTubePlayerSupportFragment fragment = (YouTubePlayerSupportFragment) cList.get(0);
-	}
 }

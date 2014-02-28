@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
+import com.clonefish.cocktail.VideoManager;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
@@ -92,8 +93,8 @@ public class PageFragment extends Fragment
         if(videoFragment == null)
         {
         	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
-        	Log.d("SSPA", "-----fragment "+ mPageNumber + " created-----");
+        	if(VideoManager.getInstance().getCur() == mPageNumber) onSetCurriet();
+//        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
         }
         
         if(recepie == null) recepie = new RecepieFragment();
@@ -105,10 +106,12 @@ public class PageFragment extends Fragment
         
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.
-	        add(R.id.video, videoFragment, "abirvalg" + mPageNumber).
+	        add(R.id.video, videoFragment).
 	        add(R.id.recepie, recepie).
 	        add(R.id.place_for_cocktail_info, cockteilInfo).
 	        commit();
+        
+        Log.d("SSPA", "-----fragment "+ mPageNumber + " created-----");
     }
 
     @Override
@@ -122,14 +125,14 @@ public class PageFragment extends Fragment
     @Override
     public void onStart() {
     	super.onStart();
-    	Log.w("SSPA", "-----fragment "+ mPageNumber + " started-----");
+    	Log.v("SSPA", "-----fragment "+ mPageNumber + " started-----");
         cockteilInfo.setInfo(mPageNumber);
     }
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
     	super.onSaveInstanceState(outState);
-    	Log.d("SSPA", "-----fragment "+ mPageNumber + " is on saving-----");
+    	Log.w("SSPA", "-----fragment "+ mPageNumber + " is on saving-----");
     	outState.putInt(ARG_SAVED_PAGE, mPageNumber);
     	outState.putString(ARG_SAVED_VIDEO_ID, video_id);
     	Log.i("SSPA", "saved pages is " + mPageNumber + " saved video is " + video_id);
@@ -139,8 +142,8 @@ public class PageFragment extends Fragment
     		remove(recepie).
     		remove(cockteilInfo).
     		commit();
-    	videoPlayer.release();
-    	Log.d("SSPA", "-----fragment "+ mPageNumber + " saved-----");
+    	onSetCurriet();
+    	Log.w("SSPA", "-----fragment "+ mPageNumber + " saved-----");
     }
     
     @Override
@@ -166,7 +169,7 @@ public class PageFragment extends Fragment
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " resume----- ");
     }
     /**
-     * Returns the page number represented by this fragment object.
+     * Returns the page number represented by this fragment object.tag:^(?!dalvikvm)tag:^(?!dalvikvm)
      */
     public int getPageNumber() {
         return mPageNumber;
@@ -182,14 +185,33 @@ public class PageFragment extends Fragment
 		@Override
 		public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) 
 		{
-			Log.w("SSPA", "-----fragment "+ mPageNumber + " vide player init----- ");
+			Log.w("SSPA", "-----fragment "+ mPageNumber + " video player init----- ");
 			videoPlayer = player;
-			onPlayerInit();
+			if(VideoManager.getInstance().getCur() == mPageNumber)
+			{
+				videoPlayer.cueVideo(video_id);
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " video cued----- " + toString());
+			}
 		}
 	}
 	
-	private void onPlayerInit()
+	public void onSetCurriet()
 	{
-		videoPlayer.cueVideo(video_id);
+		Log.d("SSPA", "-----fragment "+ mPageNumber + " run onSetCurriet in " + Thread.currentThread().getName() + "-----");
+		if(videoPlayer == null)
+		{
+			if(VideoManager.getInstance().getCur() == mPageNumber)
+			{
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " try to init player----- ");
+				videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+			}
+		} else {
+			if(VideoManager.getInstance().getCur() != mPageNumber)
+			{
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " resets player----- ");
+				if(videoPlayer != null) videoPlayer.release();
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " video player is null----- ");
+			}
+		}
 	}
 }

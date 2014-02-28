@@ -1,10 +1,6 @@
 package com.clonefish.cocktail;
 
-import java.util.ArrayList;
-
 import android.util.Log;
-
-import com.google.android.youtube.player.YouTubePlayer;
 
 public class VideoManager 
 {
@@ -14,7 +10,6 @@ public class VideoManager
 	private int currietItem;
 	private int nextItem;
 	private int maxItems;
-	private ArrayList<QueneItem> quene = new ArrayList<QueneItem>();
 	
 	/**
 	 * Делаем синглтоны правильно
@@ -55,63 +50,21 @@ public class VideoManager
 				previusItem = currietItem - 1; 
 			} else previusItem = -1;
 		}
-		Log.i("VideoManager", previusItem + " " + currietItem + " " + nextItem);
-//		updateQuene(currietItem);
+		
+		Log.i("VideoManager", 
+				previusItem + " " + 
+				currietItem + " " + 
+				nextItem);
 	}
 	
-	public void init(int curItem, int maxItems)
+	public void init(int initialItem, int maxItems)
 	{
+		onItemChanged(initialItem);
 		this.maxItems = maxItems;
-		onItemChanged(curItem);
 	}
 	
-	public void updateQuene(int itemNo)
+	public int getCur()
 	{
-		QueneItem next = null;
-		QueneItem cur = null;
-		QueneItem prev = null;
-		for(int i = 0; i<quene.size(); i++)
-		{
-			if(quene.get(i).id == itemNo)
-			{
-				cur = quene.get(i);
-				if(itemNo == 0)
-				{
-					next = quene.get(i++);
-					break;
-				} else if(itemNo == maxItems)
-				{
-					prev = quene.get(i--);
-					break;
-				} else {
-					next = quene.get(i++);
-					prev = quene.get(i--);
-					break;
-				}
-			}
-		}
-		
-		if(cur != null) cur.player.cueVideo(cur.video_id);
-		if(prev != null) prev. player.release();
-		CocktailViewActivity.activity.onPlayerRelese(prev.id);
-	}
-	
-	public void onPlayerInit(int itemNo, YouTubePlayer player, String video)
-	{
-		quene.add(new QueneItem(itemNo, player, video));
-	}
-	
-	private class QueneItem 
-	{
-		public int id;
-		public YouTubePlayer player;
-		public String video_id;
-		
-		public QueneItem(int id, YouTubePlayer player, String video_id) 
-		{
-			this.id = id;
-			this.player = player;
-			this.video_id = video_id;
-		}
+		return currietItem;
 	}
 }

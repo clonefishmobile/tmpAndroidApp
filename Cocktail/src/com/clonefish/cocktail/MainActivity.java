@@ -2,6 +2,7 @@ package com.clonefish.cocktail;
 
 import java.util.ArrayList;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.clonefish.cocktail.database.DB;
 
@@ -25,6 +27,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 {
     public static MainActivity activity;
     
+    private SearchManager searchManager;
     private ListView cocktailList;
     private DB db;
     private SimpleCursorAdapter scAdapter;
@@ -66,17 +69,46 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 				//запускаем новую активити
 				startActivity(intent);
 			}
-        	
         });
         
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
+        handleIntent(getIntent());
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
+        {
+	        String query = intent.getStringExtra(SearchManager.QUERY);
+	        Log.d("main", query);
+	        Cursor cursor = db.search(query);
+	        scAdapter.swapCursor(cursor);
+        }
+    }
+
+    @Override
+    public boolean onSearchRequested() 
+    {
+    	// TODO Auto-generated method stub
+    	return super.onSearchRequested();
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main, menu);
+        // Get the SearchView and set the searchable configuration
+        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         return true;
     }
 

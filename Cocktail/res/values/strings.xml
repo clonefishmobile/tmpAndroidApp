@@ -4,5 +4,7 @@
     <string name="app_name">Cocktail</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_search">ИСКАТЬ МАТЬ ЕГО!</string>
+    <string name="search_hint">поиск по названию коктейля</string>
 
 </resources>

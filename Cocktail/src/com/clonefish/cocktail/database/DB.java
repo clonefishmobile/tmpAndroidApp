@@ -82,6 +82,13 @@ public class DB {
 		mDB.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
 	}
 	
+	public Cursor search(String query)
+	{
+		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID,
+				COLUMN_NAME }, COLUMN_NAME + " LIKE" + "'%" + query + "%'", null,
+				null, null, null, null);
+	}
+	
 	public boolean isTableExists()
 	{
 	    Cursor cursor = mDB.query(DB_TABLE, null, null, null, null, null, null);

@@ -1,5 +1,7 @@
 package com.clonefish.cocktail.database;
 
+import com.clonefish.cocktail.Constants;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -66,7 +68,6 @@ public class DB {
 		cv.put(COLUMN_INFO, cocktail_info);
 		cv.put(COLUMN_VIDEO, video_id);
 		mDB.insert(DB_TABLE, null, cv);
-		Log.i(TAG, cocktail_name + " " + cocktail_info + " " + video_id);
 	}
 	
 	// добавить запись в DB_TABLE
@@ -81,6 +82,23 @@ public class DB {
 		mDB.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
 	}
 	
+	public boolean isTableExists()
+	{
+	    Cursor cursor = mDB.query(DB_TABLE, null, null, null, null, null, null);
+	    if(cursor != null) 
+	    {
+	        if(cursor.getCount() > 0) 
+	        {
+	        	if(Constants.DEBUG) Log.i(TAG, "table exist");
+	            cursor.close();
+	            return true;
+	        }
+	        cursor.close();
+	    }
+	    if(Constants.DEBUG) Log.i(TAG, "table not exist");
+	    return false;
+	}
+	
 	private class DBHelper extends SQLiteOpenHelper {
 
 		public DBHelper(Context context, String name, CursorFactory factory, int version) 
@@ -92,7 +110,8 @@ public class DB {
 		public void onCreate(SQLiteDatabase db) 
 		{
 			// создаем таблицу с полями
-		      db.execSQL(DB_CREATE);
+			if(Constants.DEBUG) Log.i(TAG, "create db");
+		    db.execSQL(DB_CREATE);
 		}
 
 		@Override

@@ -48,7 +48,6 @@ public class CocktailViewActivity extends FragmentActivity
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(getIntent().getIntExtra(MainActivity.POSITION, 0), true);
-        VideoManager.getInstance().init(mPager.getCurrentItem(), NUM_PAGES);
         mPager.setOnPageChangeListener(new OnPageChangeListener() 
         {
 			
@@ -56,19 +55,7 @@ public class CocktailViewActivity extends FragmentActivity
 			public void onPageSelected(int pageNumber) 
 			{
 				Log.d("ViewPager", "-----pageSelected-----");
-				VideoManager.getInstance().onItemChanged(pageNumber);
-				List<Fragment> list = activity.getSupportFragmentManager().getFragments();
-				for (int i = 0; i< list.size(); i++) 
-				{
-					final PageFragment pFrag = (PageFragment) list.get(i);
-					new Runnable() {
-						
-						@Override
-						public void run() {
-							if(pFrag != null) pFrag.onSetCurriet();
-						}
-					}.run();
-				}
+				PageFragment.onPageChanged();
 			}
 			
 			@Override
@@ -102,6 +89,7 @@ public class CocktailViewActivity extends FragmentActivity
     {
     	super.onDestroy();
     }
+    
     /**
      * Адаптер, который кажет объекты {@link ScreenSlidePageFragment} последовательно
      */
@@ -120,5 +108,11 @@ public class CocktailViewActivity extends FragmentActivity
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+    
+    public int getCurrietItem()
+    {
+    	Log.d("ViewPager", "cur item is " + mPager.getCurrentItem());
+    	return mPager.getCurrentItem();
     }
 }

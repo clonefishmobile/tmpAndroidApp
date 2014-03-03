@@ -1,5 +1,7 @@
 package com.clonefish.cocktail.fragments;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.clonefish.cocktail.CocktailViewActivity;
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
-import com.clonefish.cocktail.VideoManager;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
@@ -36,21 +38,30 @@ public class PageFragment extends Fragment
     public static final String ARG_VIDEO_ID = "video_id";
     
     /**
-     * Ключик для аргумента, в которым сохраним ид видео фрагмента
+     * Ключик для аргумента, в которым сохраним ид видео фрагмента когда он войдет в onSaveInstanceState
      */
     public static final String ARG_SAVED_VIDEO_ID = "video_id_saved";
+    
+    /**
+     * Ключик для аргумента, в которым сохраним время видео, на котором мы ушли в паузу
+     */
+    public static final String ARG_SAVED_VIDEO_TIME = "video_time_saved";
+    
+    private static ArrayList<PageFragment> pages = new ArrayList<PageFragment>();
     
     /**
      * Номер странички, берется из {@link #ARG_PAGE}.
      */
     private int mPageNumber;
-    
+    /**
+     * Ид видео, берется из {@link #ARG_VIDEO}.
+     */
     private String video_id;
-    
     private YouTubePlayerSupportFragment videoFragment;
     private YouTubePlayer videoPlayer;
     private RecepieFragment recepie;
     private CocktailInfoFragment cockteilInfo;
+    private int savedTime = 0;
     
     /**
      * Факторка для фрагментов. Делает фрагмент с заданым номером странички
@@ -82,6 +93,7 @@ public class PageFragment extends Fragment
         	Log.i("SSPA", "restore from saved instance");
         	mPageNumber = savedInstanceState.getInt(ARG_SAVED_PAGE);
         	video_id = savedInstanceState.getString(ARG_SAVED_VIDEO_ID);
+        	savedTime = savedInstanceState.getInt(ARG_SAVED_VIDEO_TIME, 0);
         	Log.i("SSPA", "pages is " + mPageNumber + " video is " + video_id);
         } else {
         	Log.i("SSPA", "create new instance");
@@ -93,7 +105,7 @@ public class PageFragment extends Fragment
         if(videoFragment == null)
         {
         	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	if(VideoManager.getInstance().getCur() == mPageNumber) onSetCurriet();
+        	if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber) onSetCurriet();
 //        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
         }
         
@@ -111,6 +123,7 @@ public class PageFragment extends Fragment
 	        add(R.id.place_for_cocktail_info, cockteilInfo).
 	        commit();
         
+        pages.add(this);
         Log.d("SSPA", "-----fragment "+ mPageNumber + " created-----");
     }
 
@@ -135,6 +148,7 @@ public class PageFragment extends Fragment
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " is on saving-----");
     	outState.putInt(ARG_SAVED_PAGE, mPageNumber);
     	outState.putString(ARG_SAVED_VIDEO_ID, video_id);
+    	if(videoPlayer != null) outState.putInt(ARG_SAVED_VIDEO_TIME, videoPlayer.getCurrentTimeMillis());
     	Log.i("SSPA", "saved pages is " + mPageNumber + " saved video is " + video_id);
     	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
     	transaction.
@@ -154,6 +168,7 @@ public class PageFragment extends Fragment
     	recepie = null;
     	cockteilInfo = null;
     	videoPlayer = null;
+    	pages.remove(this);
     }
     
     @Override
@@ -187,29 +202,42 @@ public class PageFragment extends Fragment
 		{
 			Log.w("SSPA", "-----fragment "+ mPageNumber + " video player init----- ");
 			videoPlayer = player;
-			if(VideoManager.getInstance().getCur() == mPageNumber)
+			if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber)
 			{
-				videoPlayer.cueVideo(video_id);
+				videoPlayer.cueVideo(video_id, savedTime);
 				Log.i("SSPA", "-----fragment "+ mPageNumber + " video cued----- " + toString());
 			}
 		}
 	}
 	
+	public static void onPageChanged()
+	{
+		for(int i = 0; i < pages.size(); i++)
+			pages.get(i).onSetCurriet();
+	}
+	
 	public void onSetCurriet()
 	{
-		Log.d("SSPA", "-----fragment "+ mPageNumber + " run onSetCurriet in " + Thread.currentThread().getName() + "-----");
+		Log.d("SSPA", "-----fragment "+ mPageNumber + " run onSetCurriet-----");
 		if(videoPlayer == null)
 		{
-			if(VideoManager.getInstance().getCur() == mPageNumber)
+			Log.i("SSPA", "-----fragment "+ mPageNumber + " player is null, create new----- ");
+			if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber)
 			{
 				Log.i("SSPA", "-----fragment "+ mPageNumber + " try to init player----- ");
 				videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
 			}
 		} else {
-			if(VideoManager.getInstance().getCur() != mPageNumber)
+			Log.i("SSPA", "-----fragment "+ mPageNumber + " player is not null, try to reset----- ");
+			if(CocktailViewActivity.activity.getCurrietItem() != mPageNumber)
 			{
 				Log.i("SSPA", "-----fragment "+ mPageNumber + " resets player----- ");
-				if(videoPlayer != null) videoPlayer.release();
+				if(videoPlayer != null)
+				{
+					savedTime = videoPlayer.getCurrentTimeMillis();
+					videoPlayer.release();
+					videoPlayer = null;
+				}
 				Log.i("SSPA", "-----fragment "+ mPageNumber + " video player is null----- ");
 			}
 		}

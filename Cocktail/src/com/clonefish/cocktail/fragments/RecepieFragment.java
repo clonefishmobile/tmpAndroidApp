@@ -26,7 +26,6 @@ public class RecepieFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		Log.d(TAG, "view created");
 		rootView = (ViewGroup) inflater.inflate(R.layout.recepie_fragment, container, false);
 		row1 = (TableRow) rootView.findViewById(R.id.tableRow1);
 		row2 = (TableRow) rootView.findViewById(R.id.tableRow2);

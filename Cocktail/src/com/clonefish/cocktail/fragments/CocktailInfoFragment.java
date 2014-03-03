@@ -30,7 +30,6 @@ public class CocktailInfoFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
-		Log.i(TAG, "-----view created-----");
 		rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_info_fragment, container, false); 
 		header = (TextView) rootView.findViewById(R.id.header);
 		tags = (TextView) rootView.findViewById(R.id.tags);
@@ -41,7 +40,6 @@ public class CocktailInfoFragment extends Fragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
-		Log.i(TAG, "-----activ created-----");
 		super.onActivityCreated(savedInstanceState);
 //		setInfo("docs/brain_fuck.txt");
 	}

@@ -10,6 +10,7 @@ public class Cocktail {
 	public String[] tags;
 	public String text;
 	public String video_id;
+	public String category;
 	
 	private static final String TAG = "Cocktail";
 	
@@ -19,12 +20,13 @@ public class Cocktail {
 	 * @param text
 	 * @param video_id
 	 */
-	public Cocktail(String name, String[] tags, String text, String video_id) 
+	public Cocktail(String name, String[] tags, String text, String video_id, String category) 
 	{
 		this.name = name;
 		this.tags = tags;
 		this.text = text;
 		this.video_id = video_id;
+		this.category = category;
 	}
 
 }

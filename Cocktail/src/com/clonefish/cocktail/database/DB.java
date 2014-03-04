@@ -18,8 +18,9 @@ public class DB {
 	
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_VIDEO = "video_id";
-	public static final String COLUMN_NAME = "cocktail_name";
-	public static final String COLUMN_INFO = "cocktail_info";
+	public static final String COLUMN_NAME = "name";
+	public static final String COLUMN_INFO = "info";
+	public static final String COLUMN_CAT = "category";
 	
 	private static final String TAG = "DB";
 	
@@ -28,8 +29,8 @@ public class DB {
 		COLUMN_ID + " integer primary key autoincrement, " +
 		COLUMN_NAME + " text, " +
 		COLUMN_INFO + " text, " +
-		COLUMN_VIDEO + " text " +
-		");";
+		COLUMN_VIDEO + " text, " +
+		COLUMN_CAT + " text);";
 		  
 	private final Context dbContext;
 		  
@@ -61,12 +62,13 @@ public class DB {
 	}
 	
 	// добавить запись в DB_TABLE
-	public void addRec(String cocktail_name, String cocktail_info, String video_id) 
+	public void addRec(String cocktail_name, String cocktail_info, String video_id, String cathegory) 
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(COLUMN_NAME, cocktail_name);
 		cv.put(COLUMN_INFO, cocktail_info);
 		cv.put(COLUMN_VIDEO, video_id);
+		cv.put(COLUMN_CAT, cathegory);
 		mDB.insert(DB_TABLE, null, cv);
 	}
 	
@@ -84,8 +86,15 @@ public class DB {
 	
 	public Cursor search(String query)
 	{
-		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID,
-				COLUMN_NAME }, COLUMN_NAME + " LIKE" + "'%" + query + "%'", null,
+		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+				COLUMN_CAT }, COLUMN_NAME + " LIKE" + "'%" + query + "%'", null,
+				null, null, null, null);
+	}
+	
+	public Cursor searchCategory(String query)
+	{
+		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+				COLUMN_CAT }, COLUMN_CAT + " LIKE" + "'%" + query + "%'", null,
 				null, null, null, null);
 	}
 	
@@ -122,8 +131,9 @@ public class DB {
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-			// TODO Auto-generated method stub
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
+			onCreate(db);
 		}
 	}
 }

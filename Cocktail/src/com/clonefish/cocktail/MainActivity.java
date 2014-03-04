@@ -3,6 +3,7 @@ package com.clonefish.cocktail;
 import java.util.ArrayList;
 
 import android.app.SearchManager;
+import android.app.SearchManager.OnCancelListener;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,7 +28,6 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 {
     public static MainActivity activity;
     
-    private SearchManager searchManager;
     private ListView cocktailList;
     private DB db;
     private SimpleCursorAdapter scAdapter;
@@ -104,11 +104,29 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main, menu);
         // Get the SearchView and set the searchable configuration
-        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchManager.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel() {
+				Log.d("main", "REWETRERTERTERTERTERTRTERGERGERGRTHRTHRTHRTHRTHETRH");
+			}
+		});
+//        searchManager.setOnDismissListener(new OnDismissListener() {
+//			
+//        	private void onStop() {
+//				// TODO Auto-generated method stub
+//        		Log.e("main", "-------!!!!!search stoped!!!!!-----");
+//			}
+//			@Override
+//			public void onDismiss() {
+//				Log.e("main", "-------!!!!!search dismissed!!!!!-----");
+//			}	
+//		});
         return true;
     }
 
@@ -171,6 +189,7 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     		cocktailArray.add(new Cocktail(name, tags, text, video_id));
     		allData.moveToNext();
     	}
+    	Log.d("main", "-----cocktailArray created-----");
     }
     
     private void createDB()

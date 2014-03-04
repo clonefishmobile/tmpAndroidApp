@@ -3,6 +3,8 @@ package com.clonefish.cocktail;
 
 import java.util.List;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +16,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.clonefish.cocktail.fragments.PageFragment;
 
@@ -34,6 +37,8 @@ public class CocktailViewActivity extends FragmentActivity
      * Адаптер, подсовывающий странички mPagerу
      */
     private PagerAdapter mPagerAdapter;
+    
+    public static final String TAG = "CocktailViewActivity";
     
     public static CocktailViewActivity activity;
     
@@ -70,12 +75,20 @@ public class CocktailViewActivity extends FragmentActivity
 				
 			}
 		});
+        Log.i(TAG, "------activity created-------");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main, menu);
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        Log.i(TAG, "------menu created-------");
         return true;
     }
 
@@ -87,7 +100,20 @@ public class CocktailViewActivity extends FragmentActivity
     @Override
     protected void onDestroy() 
     {
+    	Log.i(TAG, "------activity destroed-------");
     	super.onDestroy();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	Log.i(TAG, "------activity instance saved-------");
+    	super.onSaveInstanceState(outState);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	Log.i(TAG, "------activity instance restore-------");
+    	super.onRestoreInstanceState(savedInstanceState);
     }
     
     /**

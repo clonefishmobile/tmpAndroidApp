@@ -94,6 +94,7 @@ public class PageFragment extends Fragment
         	mPageNumber = savedInstanceState.getInt(ARG_SAVED_PAGE);
         	video_id = savedInstanceState.getString(ARG_SAVED_VIDEO_ID);
         	savedTime = savedInstanceState.getInt(ARG_SAVED_VIDEO_TIME, 0);
+        	
         	Log.i("SSPA", "pages is " + mPageNumber + " video is " + video_id);
         } else {
         	Log.i("SSPA", "create new instance");
@@ -139,6 +140,31 @@ public class PageFragment extends Fragment
     public void onStart() {
     	super.onStart();
     	Log.v("SSPA", "-----fragment "+ mPageNumber + " started-----");
+    	
+    	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+    	if(videoFragment == null)
+        {
+        	videoFragment = YouTubePlayerSupportFragment.newInstance();
+        	if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber) onSetCurriet();
+        	transaction.add(R.id.video, videoFragment);
+//        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+        }
+        
+        if(recepie == null)
+        {
+        	recepie = new RecepieFragment();
+        	transaction.add(R.id.recepie, recepie);
+        }
+        
+        if(cockteilInfo == null) 
+        {
+        	cockteilInfo = new CocktailInfoFragment();
+        	transaction.add(R.id.place_for_cocktail_info, cockteilInfo);
+        }
+        
+	        
+	        if(!transaction.isEmpty()) transaction.commit();
+    	
         cockteilInfo.setInfo(mPageNumber);
     }
     

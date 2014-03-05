@@ -2,7 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" 
+    android:baselineAligned="false"
+    android:id="@+id/cocktail_screen">
     
-
+	<LinearLayout 
+	    android:id="@+id/left_side"
+		android:layout_weight="1"  
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+		
+	    <LinearLayout
+	        android:id="@+id/video"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:padding="10dp">
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/recepie"
+	        android:layout_width="match_parent"
+	        android:layout_height="fill_parent"
+	        android:orientation="vertical"
+	        android:gravity="center_vertical">
+	    </LinearLayout>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    android:id="@+id/place_for_cocktail_info"
+	    android:layout_weight="1"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    >
+	</LinearLayout>
 </LinearLayout>

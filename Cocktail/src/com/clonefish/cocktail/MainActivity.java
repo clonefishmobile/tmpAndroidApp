@@ -85,7 +85,6 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 			@Override
 			public void onClick(View v) {
 				Cursor cursor = db.searchCategory("коктейли");
-				Log.d("main", "" + cursor.getColumnCount());
 		        scAdapter.swapCursor(cursor);
 			}
 		});
@@ -121,7 +120,6 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) 
         {
 	        String query = intent.getStringExtra(SearchManager.QUERY);
-	        Log.d("main", query);
 	        Cursor cursor = db.search(query);
 	        scAdapter.swapCursor(cursor);
         }
@@ -189,8 +187,6 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 		@Override
 		public Cursor loadInBackground() {
 			Cursor cursor = db.getAllData();
-			Log.w("main", "" + cursor.getCount());
-			Log.w("main", "" + cursor.getColumnCount());
 			createCocktailList(cursor);
 			return cursor;
 		}
@@ -210,10 +206,8 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     		String category = allData.getString(allData.getColumnIndex(DB.COLUMN_CAT));
     		
     		cocktailArray.add(new Cocktail(name, tags, text, video_id, category));
-    		Log.d("main", "" + allData.getColumnName(4));
     		allData.moveToNext();
     	}
-    	Log.d("main", "-----cocktailArray created-----");
     }
     
     private void createDB()

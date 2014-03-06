@@ -24,6 +24,14 @@
 		    </LinearLayout>
 		    
             <LinearLayout
+		        android:id="@+id/video_timing"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:paddingBottom="10dp">
+	    	</LinearLayout>
+            
+            <LinearLayout
 		        android:id="@+id/place_for_cocktail_info"
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"

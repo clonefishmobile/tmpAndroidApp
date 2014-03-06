@@ -25,6 +25,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clonefish.cocktail.database.DB;
+import com.clonefish.cocktail.social.facebook.LoginUsingLoginFragmentActivity;
+import com.clonefish.cocktail.utils.StringConverter;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 
 public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
 {
@@ -35,6 +41,14 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     private SimpleCursorAdapter scAdapter;
     private static ArrayList<Cocktail> cocktailArray = new ArrayList<Cocktail>();
     
+    private UiLifecycleHelper uiHelper;
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) 
+        {
+        	
+        }
+    };
     public static final String POSITION = "position";
     public static final String NUM_PAGES = "num";
     
@@ -42,6 +56,9 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
         
         activity = this;
         
@@ -108,8 +125,41 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 		        scAdapter.swapCursor(cursor);
 			}
 		});
+        
+        ImageButton buttonLoginFragment = (ImageButton) findViewById(R.id.fb_login);
+        buttonLoginFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, LoginUsingLoginFragmentActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+    
+    private FacebookDialog.ShareDialogBuilder createShareDialogBuilder() {
+        return new FacebookDialog.ShareDialogBuilder(this)
+                .setName("Hello Facebook")
+                .setDescription("The 'Hello Facebook' sample application showcases simple Facebook integration")
+                .setLink("http://developers.facebook.com/android");
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.e("Activity", String.format("Error: %s", error.toString()));
+            }
+
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.i("Activity", "Success!");
+            }
+        });
+    }
+    
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -155,9 +205,31 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     }
 
     @Override
+    protected void onResume() 
+    {
+    	super.onResume();
+    	uiHelper.onResume();
+    }
+    
+    @Override
+    protected void onPause() 
+    {
+    	super.onPause();
+    	uiHelper.onPause();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) 
+    {
+    	super.onSaveInstanceState(outState);
+    	uiHelper.onSaveInstanceState(outState);
+    }
+    
+    @Override
     protected void onDestroy() 
     {
     	super.onDestroy();
+    	uiHelper.onDestroy();
     	db.close();
     }
 
@@ -204,8 +276,9 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     		String text  = allData.getString(allData.getColumnIndex(DB.COLUMN_INFO));
     		String video_id = allData.getString(allData.getColumnIndex(DB.COLUMN_VIDEO));
     		String category = allData.getString(allData.getColumnIndex(DB.COLUMN_CAT));
+    		int[] timing = StringConverter.convertStringToIntArray(allData.getString(allData.getColumnIndex(DB.COLUMN_TIMING)));
     		
-    		cocktailArray.add(new Cocktail(name, tags, text, video_id, category));
+    		cocktailArray.add(new Cocktail(name, tags, text, video_id, category, timing));
     		allData.moveToNext();
     	}
     }
@@ -236,10 +309,20 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
                 "Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
                 "40%, 700 мл, Франция."};
         String[] cocktail_category = {"коктейли", "коктейли", "украшение", "украшение"};
+        int[] origTiming = {30000, 60000, 90000};
+        int[] romTiming = {30000, 60000, 90000, 120000, 150000};
+        int[] garTiming = {30000, 60000, 90000};
+        int[] cluTiming = {30000};
+        String[] timing = {
+        	StringConverter.convertArrayToString(origTiming),
+        	StringConverter.convertArrayToString(romTiming),
+        	StringConverter.convertArrayToString(garTiming),
+        	StringConverter.convertArrayToString(cluTiming)
+        	};
         
         for(int i = 0; i < 4; i++)
         {
-        	db.addRec(cocktail_name[i], cocktail_info[i], video_id[i], cocktail_category[i]);
+        	db.addRec(cocktail_name[i], cocktail_info[i], video_id[i], cocktail_category[i], timing[i]);
         }
     }
     

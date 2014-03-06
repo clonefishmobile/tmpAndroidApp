@@ -17,6 +17,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <Button
+        android:id="@+id/share"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="share" />
+
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"

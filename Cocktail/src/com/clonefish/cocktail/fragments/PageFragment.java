@@ -8,12 +8,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.clonefish.cocktail.CocktailViewActivity;
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
+import com.facebook.widget.FacebookDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
@@ -37,6 +42,8 @@ public class PageFragment extends Fragment
      */
     public static final String ARG_VIDEO_ID = "video_id";
     
+    public static final String ARG_VIDEO_TIMING = "video_timing";
+    
     /**
      * Ключик для аргумента, в которым сохраним ид видео фрагмента когда он войдет в onSaveInstanceState
      */
@@ -46,6 +53,8 @@ public class PageFragment extends Fragment
      * Ключик для аргумента, в которым сохраним время видео, на котором мы ушли в паузу
      */
     public static final String ARG_SAVED_VIDEO_TIME = "video_time_saved";
+    
+    public static final String ARG_SAVED_VIDEO_TIMING = "video_timing_saved";
     
     private static ArrayList<PageFragment> pages = new ArrayList<PageFragment>();
     
@@ -57,11 +66,13 @@ public class PageFragment extends Fragment
      * Ид видео, берется из {@link #ARG_VIDEO}.
      */
     private String video_id;
+    private int[] timing;
     private YouTubePlayerSupportFragment videoFragment;
     private YouTubePlayer videoPlayer;
     private RecepieFragment recepie;
     private CocktailInfoFragment cockteilInfo;
     private int savedTime = 0;
+    private LinearLayout buttonLayout;
     
     /**
      * Факторка для фрагментов. Делает фрагмент с заданым номером странички
@@ -74,6 +85,8 @@ public class PageFragment extends Fragment
         args.putInt(ARG_PAGE, (numOfPage));
         //ид видео
         args.putString(ARG_VIDEO_ID, MainActivity.getCocktailList().get(numOfPage).video_id);
+        //timing
+        args.putIntArray(ARG_VIDEO_TIMING, MainActivity.getCocktailList().get(numOfPage).timing);
         //и все сохраняем
         fragment.setArguments(args);
         return fragment;
@@ -87,6 +100,7 @@ public class PageFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         Log.d("SSPA", "-----start creating fragment-----");
         if(savedInstanceState != null)
         {
@@ -94,20 +108,19 @@ public class PageFragment extends Fragment
         	mPageNumber = savedInstanceState.getInt(ARG_SAVED_PAGE);
         	video_id = savedInstanceState.getString(ARG_SAVED_VIDEO_ID);
         	savedTime = savedInstanceState.getInt(ARG_SAVED_VIDEO_TIME, 0);
-        	
-        	Log.i("SSPA", "pages is " + mPageNumber + " video is " + video_id);
+        	timing = savedInstanceState.getIntArray(ARG_SAVED_VIDEO_TIMING);
+        	Log.i("SSPA", "" + transaction.isEmpty());
         } else {
         	Log.i("SSPA", "create new instance");
         	mPageNumber = getArguments().getInt(ARG_PAGE);
         	video_id = getArguments().getString(ARG_VIDEO_ID);
-        	Log.i("SSPA", "pages is " + mPageNumber + " video is " + video_id);
+        	timing = getArguments().getIntArray(ARG_VIDEO_TIMING);
         }
         
         if(videoFragment == null)
         {
         	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber) onSetCurriet();
-//        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+        	onSetCurriet();
         }
         
         if(recepie == null) recepie = new RecepieFragment();
@@ -115,9 +128,9 @@ public class PageFragment extends Fragment
         if(cockteilInfo == null) 
         {
         	cockteilInfo = new CocktailInfoFragment();
+        	cockteilInfo.setPageNumber(mPageNumber);
         }
         
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.
 	        add(R.id.video, videoFragment).
 	        add(R.id.recepie, recepie).
@@ -132,6 +145,8 @@ public class PageFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Берем корневой вью
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_screen, container, false);
+        buttonLayout = (LinearLayout) rootView.findViewById(R.id.video_timing);
+        createTimingButton();
         Log.v("SSPA", "-----fragment "+ mPageNumber + " view created----- " + this.getId());
         return rootView;
     }
@@ -145,9 +160,8 @@ public class PageFragment extends Fragment
     	if(videoFragment == null)
         {
         	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber) onSetCurriet();
+        	onSetCurriet();
         	transaction.add(R.id.video, videoFragment);
-//        	videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
         }
         
         if(recepie == null)
@@ -159,13 +173,12 @@ public class PageFragment extends Fragment
         if(cockteilInfo == null) 
         {
         	cockteilInfo = new CocktailInfoFragment();
+        	cockteilInfo.setPageNumber(mPageNumber);
         	transaction.add(R.id.place_for_cocktail_info, cockteilInfo);
         }
         
-	        
-	        if(!transaction.isEmpty()) transaction.commit();
-    	
-        cockteilInfo.setInfo(mPageNumber);
+        if(!transaction.isEmpty()) transaction.commit();
+        
     }
     
     @Override
@@ -174,6 +187,7 @@ public class PageFragment extends Fragment
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " is on saving-----");
     	outState.putInt(ARG_SAVED_PAGE, mPageNumber);
     	outState.putString(ARG_SAVED_VIDEO_ID, video_id);
+    	outState.putIntArray(ARG_SAVED_VIDEO_TIMING, timing);
     	if(videoPlayer != null) outState.putInt(ARG_SAVED_VIDEO_TIME, videoPlayer.getCurrentTimeMillis());
     	Log.i("SSPA", "saved pages is " + mPageNumber + " saved video is " + video_id);
     	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -189,12 +203,18 @@ public class PageFragment extends Fragment
     @Override
     public void onStop() {
     	super.onStop();
-    	Log.d("SSPA", "-----fragment "+ mPageNumber + " stoped-----");
     	videoFragment = null;
     	recepie = null;
     	cockteilInfo = null;
     	videoPlayer = null;
     	pages.remove(this);
+    	Log.d("SSPA", "-----fragment "+ mPageNumber + " stoped-----");
+    }
+    
+    @Override
+    public void onDestroy() {
+    	Log.d("SSPA", "-----fragment "+ mPageNumber + " destroed-----");
+    	super.onDestroy();
     }
     
     @Override
@@ -206,6 +226,28 @@ public class PageFragment extends Fragment
     @Override
     public void onResume() 
     {
+    	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+    	if(videoFragment == null)
+        {
+        	videoFragment = YouTubePlayerSupportFragment.newInstance();
+        	onSetCurriet();
+        	transaction.add(R.id.video, videoFragment);
+        }
+        
+        if(recepie == null)
+        {
+        	recepie = new RecepieFragment();
+        	cockteilInfo.setPageNumber(mPageNumber);
+        	transaction.add(R.id.recepie, recepie);
+        }
+        
+        if(cockteilInfo == null) 
+        {
+        	cockteilInfo = new CocktailInfoFragment();
+        	transaction.add(R.id.place_for_cocktail_info, cockteilInfo);
+        }
+        transaction.commit();
+        onSetCurriet();
     	super.onResume();
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " resume----- ");
     }
@@ -215,12 +257,19 @@ public class PageFragment extends Fragment
     public int getPageNumber() {
         return mPageNumber;
     }
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
     
 	private class YouTubeInitListener implements OnInitializedListener
 	{
+		
 		@Override
-		public void onInitializationFailure(Provider provider, YouTubeInitializationResult msg) {
-			Toast.makeText(getActivity(), msg.toString(), Toast.LENGTH_LONG).show();
+		public void onInitializationFailure(Provider provider, YouTubeInitializationResult errorReason) {
+			if (errorReason.isUserRecoverableError()) 
+			{
+				errorReason.getErrorDialog(getActivity(), RECOVERY_DIALOG_REQUEST).show();
+			} else {
+				Toast.makeText(getActivity(), errorReason.toString(), Toast.LENGTH_LONG).show();
+			}
 		}
 		
 		@Override
@@ -239,7 +288,10 @@ public class PageFragment extends Fragment
 	public static void onPageChanged()
 	{
 		for(int i = 0; i < pages.size(); i++)
+		{
 			pages.get(i).onSetCurriet();
+			Log.e("SSPA", "" + (pages.get(i) == null));
+		}
 	}
 	
 	public void onSetCurriet()
@@ -266,6 +318,28 @@ public class PageFragment extends Fragment
 				}
 				Log.i("SSPA", "-----fragment "+ mPageNumber + " video player is null----- ");
 			}
+		}
+	}
+	
+	public void createTimingButton()
+	{
+		for (int time : timing) 
+		{
+			final int set = time;
+			Log.e(ARG_VIDEO_TIMING, "" + mPageNumber + " " + time);
+			ImageButton bb = new ImageButton(getActivity());
+			bb.setImageResource(R.drawable.ic_launcher);
+			bb.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(videoPlayer != null)
+					{
+						videoPlayer.seekToMillis(set);
+					}
+				}
+			});
+			buttonLayout.addView(bb);
 		}
 	}
 }

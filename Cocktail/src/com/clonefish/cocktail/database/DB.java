@@ -13,7 +13,7 @@ import android.util.Log;
 public class DB {
 	
 	private static final String DB_NAME = "cocktail_db";
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 	private static final String DB_TABLE = "cocktail_table";
 	
 	public static final String COLUMN_ID = "_id";
@@ -21,6 +21,7 @@ public class DB {
 	public static final String COLUMN_NAME = "name";
 	public static final String COLUMN_INFO = "info";
 	public static final String COLUMN_CAT = "category";
+	public static final String COLUMN_TIMING = "timing";
 	
 	private static final String TAG = "DB";
 	
@@ -30,7 +31,8 @@ public class DB {
 		COLUMN_NAME + " text, " +
 		COLUMN_INFO + " text, " +
 		COLUMN_VIDEO + " text, " +
-		COLUMN_CAT + " text);";
+		COLUMN_CAT + " text, " +
+		COLUMN_TIMING + " text);";
 		  
 	private final Context dbContext;
 		  
@@ -40,6 +42,7 @@ public class DB {
 	public DB(Context ctx) 
 	{
 		dbContext = ctx;
+		if(Constants.DEBUG) Log.i(TAG, "-----create instnace-----");
 	}
 	
 //	открыть подключение
@@ -47,28 +50,32 @@ public class DB {
 	{
 		dbHelper = new DBHelper(dbContext, DB_NAME, null, DB_VERSION);
 		mDB = dbHelper.getWritableDatabase();
+		if(Constants.DEBUG) Log.i(TAG, "-----open database-----");
 	}
 	
 	//закрыть подключение
 	public void close()
 	{
 		if (dbHelper!=null) dbHelper.close();
+		if(Constants.DEBUG) Log.i(TAG, "-----close database-----");
 	}
 	
 	// получить все данные из таблицы DB_TABLE
 	public Cursor getAllData()
 	{
+		if(Constants.DEBUG) Log.i(TAG, "-----getting all data-----");
 		return mDB.query(DB_TABLE, null, null, null, null, null, null);
 	}
 	
 	// добавить запись в DB_TABLE
-	public void addRec(String cocktail_name, String cocktail_info, String video_id, String cathegory) 
+	public void addRec(String cocktail_name, String cocktail_info, String video_id, String cathegory, String timing) 
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(COLUMN_NAME, cocktail_name);
 		cv.put(COLUMN_INFO, cocktail_info);
 		cv.put(COLUMN_VIDEO, video_id);
 		cv.put(COLUMN_CAT, cathegory);
+		cv.put(COLUMN_TIMING, timing);
 		mDB.insert(DB_TABLE, null, cv);
 	}
 	
@@ -115,6 +122,12 @@ public class DB {
 	    return false;
 	}
 	
+	public void clearDatabase() 
+	{
+		   mDB.delete(DB_TABLE, null, null); //erases everything in the table.
+		   mDB.close();
+	}
+	
 	private class DBHelper extends SQLiteOpenHelper {
 
 		public DBHelper(Context context, String name, CursorFactory factory, int version) 
@@ -126,12 +139,20 @@ public class DB {
 		public void onCreate(SQLiteDatabase db) 
 		{
 			// создаем таблицу с полями
-			if(Constants.DEBUG) Log.i(TAG, "create db");
+			if(Constants.DEBUG) Log.i(TAG, "-----create db-----");
 		    db.execSQL(DB_CREATE);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			if(Constants.DEBUG) Log.w(TAG, "-----try to upgrade table-----");
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
+			onCreate(db);
+		}
+		
+		@Override
+		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			if(Constants.DEBUG) Log.w(TAG, "-----try to downgrade table-----");
 			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
 			onCreate(db);
 		}

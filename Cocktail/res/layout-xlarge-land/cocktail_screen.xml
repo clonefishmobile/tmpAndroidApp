@@ -21,6 +21,14 @@
 	        android:padding="10dp">
 	    </LinearLayout>
 	    
+	    <LinearLayout
+	        android:id="@+id/video_timing"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:paddingBottom="10dp">
+	    </LinearLayout>
+	    
 	    <LinearLayout 
 	        android:id="@+id/recepie"
 	        android:layout_width="match_parent"

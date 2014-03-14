@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.clonefish.cocktail.R;
 import com.facebook.Session;
+import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.widget.UserSettingsFragment;
 
@@ -27,12 +28,12 @@ public class LoginUsingLoginFragmentActivity extends FragmentActivity {
                 Log.d("LoginUsingLoginFragmentActivity", String.format("New session state: %s", state.toString()));
             }
         });
+        userSettingsFragment.setPublishPermissions("publish_actions");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         userSettingsFragment.onActivityResult(requestCode, resultCode, data);
-        Log.d("LoginUsingLoginFragmentActivity", "on activity result");
         super.onActivityResult(requestCode, resultCode, data);
     }
 

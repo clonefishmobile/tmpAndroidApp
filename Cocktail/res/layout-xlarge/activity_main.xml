@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:orientation="horizontal">
-	
-    <LinearLayout 
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/social_login_bb"
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:id="@+id/social_login_bb"
-    	android:orientation="horizontal"
-    	android:layout_alignParentTop="true">
-    	
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <com.facebook.widget.LoginButton
+                android:id="@+id/fb_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                facebook:confirm_logout="false"
+                facebook:fetch_user_info="true"
+                />
+
         <ImageButton
-            android:id="@+id/fb_login" 
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher"/>
-        
-        <ImageButton 
             android:id="@+id/vk_login"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher"/>
-        
+            android:layout_weight="1"
+            android:src="@drawable/ic_launcher" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/category_buttons"
         android:layout_width="wrap_content"
@@ -35,57 +38,58 @@
         android:layout_below="@+id/social_login_bb"
         android:orientation="vertical" >
 
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:contentDescription="Коктейли"
-	        android:id="@+id/cockteail_cat"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Коктейли" />
+        <ImageButton
+            android:id="@+id/cockteail_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Коктейли"
+            android:src="@drawable/ic_launcher"
+            android:text="Коктейли" />
 
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:id="@+id/stuff_cat"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Украшения" />
-	    
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:id="@+id/button3"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="категория 3" />
-	    
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:id="@+id/button4"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="категория 4" />
-	    
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:id="@+id/button5"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="категория 5" />
-	    
-	    <ImageButton
-	        android:src="@drawable/ic_launcher"
-	        android:id="@+id/all"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Показать все" />
+        <ImageButton
+            android:id="@+id/stuff_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:text="Украшения" />
+
+        <ImageButton
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:text="категория 3" />
+
+        <ImageButton
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:text="категория 4" />
+
+        <ImageButton
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:text="категория 5" />
+
+        <ImageButton
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:text="Показать все" />
     </LinearLayout>
 
-	<ListView
-	    android:id="@+id/cocktail_list"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignTop="@+id/category_buttons"
-	    android:layout_toRightOf="@id/category_buttons" >
+    <ListView
+        android:id="@+id/cocktail_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/category_buttons"
+        android:layout_toRightOf="@id/category_buttons"
+        tools:listitem="@layout/item" >
+    </ListView>
 
-	</ListView>
 </RelativeLayout>

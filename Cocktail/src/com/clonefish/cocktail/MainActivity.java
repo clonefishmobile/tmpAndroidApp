@@ -8,12 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,30 +23,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clonefish.cocktail.database.DB;
+import com.clonefish.cocktail.social.SocialActivity;
 import com.clonefish.cocktail.social.facebook.LoginUsingLoginFragmentActivity;
+import com.clonefish.cocktail.social.vkontakte.VKLoginFragmentActivity;
 import com.clonefish.cocktail.utils.StringConverter;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.FacebookDialog;
+import com.facebook.model.GraphPlace;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
-public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
+public class MainActivity extends SocialActivity implements LoaderCallbacks<Cursor>
 {
     public static MainActivity activity;
+    
+    private GraphUser user;
+    private GraphPlace place;
     
     private ListView cocktailList;
     private DB db;
     private SimpleCursorAdapter scAdapter;
     private static ArrayList<Cocktail> cocktailArray = new ArrayList<Cocktail>();
     
-    private UiLifecycleHelper uiHelper;
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) 
-        {
-        	
-        }
-    };
     public static final String POSITION = "position";
     public static final String NUM_PAGES = "num";
     
@@ -56,9 +50,6 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        uiHelper = new UiLifecycleHelper(this, callback);
-        uiHelper.onCreate(savedInstanceState);
         
         activity = this;
         
@@ -126,36 +117,19 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 			}
 		});
         
-        ImageButton buttonLoginFragment = (ImageButton) findViewById(R.id.fb_login);
-        buttonLoginFragment.setOnClickListener(new View.OnClickListener() {
+        LoginButton buttonLoginFB = (LoginButton) findViewById(R.id.fb_login);
+        buttonLoginFB.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, LoginUsingLoginFragmentActivity.class);
-                startActivity(intent);
+            public void onUserInfoFetched(GraphUser user) {
+                MainActivity.this.user = user;
             }
         });
-    }
-    
-    private FacebookDialog.ShareDialogBuilder createShareDialogBuilder() {
-        return new FacebookDialog.ShareDialogBuilder(this)
-                .setName("Hello Facebook")
-                .setDescription("The 'Hello Facebook' sample application showcases simple Facebook integration")
-                .setLink("http://developers.facebook.com/android");
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+        ImageButton buttonLoginVK = (ImageButton) findViewById(R.id.vk_login);
+        buttonLoginVK.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-                Log.e("Activity", String.format("Error: %s", error.toString()));
-            }
-
-            @Override
-            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-                Log.i("Activity", "Success!");
+            public void onClick(View v) {
+            	Intent intent = new Intent(activity, VKLoginFragmentActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -205,31 +179,9 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     }
 
     @Override
-    protected void onResume() 
-    {
-    	super.onResume();
-    	uiHelper.onResume();
-    }
-    
-    @Override
-    protected void onPause() 
-    {
-    	super.onPause();
-    	uiHelper.onPause();
-    }
-    
-    @Override
-    protected void onSaveInstanceState(Bundle outState) 
-    {
-    	super.onSaveInstanceState(outState);
-    	uiHelper.onSaveInstanceState(outState);
-    }
-    
-    @Override
     protected void onDestroy() 
     {
     	super.onDestroy();
-    	uiHelper.onDestroy();
     	db.close();
     }
 
@@ -329,5 +281,10 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     public static ArrayList<Cocktail> getCocktailList()
     {
     	return cocktailArray;
+    }
+    
+    public GraphUser getUser()
+    {
+    	return user;
     }
 }

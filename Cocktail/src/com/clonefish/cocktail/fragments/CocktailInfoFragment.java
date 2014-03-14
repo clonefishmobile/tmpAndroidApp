@@ -2,18 +2,16 @@ package com.clonefish.cocktail.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.clonefish.cocktail.CocktailViewActivity;
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
-import com.facebook.widget.FacebookDialog;
+import com.clonefish.cocktail.social.ShareButton;
+import com.clonefish.cocktail.social.SocialActivity;
 
 public class CocktailInfoFragment extends Fragment
 {
@@ -36,13 +34,6 @@ public class CocktailInfoFragment extends Fragment
 		this.pageNumber = pageNumber;
 	}
 	
-	private FacebookDialog.ShareDialogBuilder createShareDialogBuilder() {
-        return new FacebookDialog.ShareDialogBuilder(getActivity())
-                .setName("Hello Facebook")
-                .setDescription("The 'Hello Facebook' sample application showcases simple Facebook integration")
-                .setLink("http://developers.facebook.com/android");
-    }
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -51,13 +42,7 @@ public class CocktailInfoFragment extends Fragment
 		tags = (TextView) rootView.findViewById(R.id.tags);
 		cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_text);
 		share = (Button) rootView.findViewById(R.id.share);
-        share.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				CocktailViewActivity.activity.getUIHelper().trackPendingDialogCall(createShareDialogBuilder().build().present());
-			}
-		});
+		share.setOnClickListener(new ShareButton((SocialActivity) getActivity(), "Смотрите какой классный коктейл можно сделать! Рецепт в Barmen Dev!"));
         setInfo(pageNumber);
 		return rootView;
 	}

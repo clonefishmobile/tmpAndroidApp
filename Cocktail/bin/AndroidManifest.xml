@@ -59,6 +59,16 @@
                 android:value=".MainActivity" />
         </activity>
         
+        <activity android:name="com.vk.sdk.VKOpenAuthActivity" />
+        
+        <activity 
+            android:name="com.clonefish.cocktail.social.vkontakte.VKLoginFragmentActivity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id" />
     </application>
 

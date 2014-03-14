@@ -100,7 +100,6 @@ public class PageFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         Log.d("SSPA", "-----start creating fragment-----");
         if(savedInstanceState != null)
         {
@@ -109,7 +108,6 @@ public class PageFragment extends Fragment
         	video_id = savedInstanceState.getString(ARG_SAVED_VIDEO_ID);
         	savedTime = savedInstanceState.getInt(ARG_SAVED_VIDEO_TIME, 0);
         	timing = savedInstanceState.getIntArray(ARG_SAVED_VIDEO_TIMING);
-        	Log.i("SSPA", "" + transaction.isEmpty());
         } else {
         	Log.i("SSPA", "create new instance");
         	mPageNumber = getArguments().getInt(ARG_PAGE);
@@ -117,27 +115,6 @@ public class PageFragment extends Fragment
         	timing = getArguments().getIntArray(ARG_VIDEO_TIMING);
         }
         
-        if(videoFragment == null)
-        {
-        	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	onSetCurriet();
-        }
-        
-        if(recepie == null) recepie = new RecepieFragment();
-        
-        if(cockteilInfo == null) 
-        {
-        	cockteilInfo = new CocktailInfoFragment();
-        	cockteilInfo.setPageNumber(mPageNumber);
-        }
-        
-        transaction.
-	        add(R.id.video, videoFragment).
-	        add(R.id.recepie, recepie).
-	        add(R.id.place_for_cocktail_info, cockteilInfo).
-	        commit();
-        
-        pages.add(this);
         Log.d("SSPA", "-----fragment "+ mPageNumber + " created-----");
     }
 
@@ -147,7 +124,7 @@ public class PageFragment extends Fragment
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.cocktail_screen, container, false);
         buttonLayout = (LinearLayout) rootView.findViewById(R.id.video_timing);
         createTimingButton();
-        Log.v("SSPA", "-----fragment "+ mPageNumber + " view created----- " + this.getId());
+        Log.v("SSPA", "-----fragment "+ mPageNumber + " view created----- ");
         return rootView;
     }
     
@@ -155,30 +132,7 @@ public class PageFragment extends Fragment
     public void onStart() {
     	super.onStart();
     	Log.v("SSPA", "-----fragment "+ mPageNumber + " started-----");
-    	
-    	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-    	if(videoFragment == null)
-        {
-        	videoFragment = YouTubePlayerSupportFragment.newInstance();
-        	onSetCurriet();
-        	transaction.add(R.id.video, videoFragment);
-        }
-        
-        if(recepie == null)
-        {
-        	recepie = new RecepieFragment();
-        	transaction.add(R.id.recepie, recepie);
-        }
-        
-        if(cockteilInfo == null) 
-        {
-        	cockteilInfo = new CocktailInfoFragment();
-        	cockteilInfo.setPageNumber(mPageNumber);
-        	transaction.add(R.id.place_for_cocktail_info, cockteilInfo);
-        }
-        
-        if(!transaction.isEmpty()) transaction.commit();
-        
+        pages.add(this);
     }
     
     @Override
@@ -189,14 +143,13 @@ public class PageFragment extends Fragment
     	outState.putString(ARG_SAVED_VIDEO_ID, video_id);
     	outState.putIntArray(ARG_SAVED_VIDEO_TIMING, timing);
     	if(videoPlayer != null) outState.putInt(ARG_SAVED_VIDEO_TIME, videoPlayer.getCurrentTimeMillis());
-    	Log.i("SSPA", "saved pages is " + mPageNumber + " saved video is " + video_id);
+    	onSetCurriet();
     	FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
     	transaction.
     		remove(videoFragment).
     		remove(recepie).
     		remove(cockteilInfo).
     		commit();
-    	onSetCurriet();
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " saved-----");
     }
     
@@ -237,22 +190,22 @@ public class PageFragment extends Fragment
         if(recepie == null)
         {
         	recepie = new RecepieFragment();
-        	cockteilInfo.setPageNumber(mPageNumber);
         	transaction.add(R.id.recepie, recepie);
         }
         
         if(cockteilInfo == null) 
         {
         	cockteilInfo = new CocktailInfoFragment();
+        	cockteilInfo.setPageNumber(mPageNumber);
         	transaction.add(R.id.place_for_cocktail_info, cockteilInfo);
         }
-        transaction.commit();
-        onSetCurriet();
+        if(!transaction.isEmpty()) transaction.commit();
+//        pages.add(this);
     	super.onResume();
     	Log.w("SSPA", "-----fragment "+ mPageNumber + " resume----- ");
     }
     /**
-     * Returns the page number represented by this fragment object.tag:^(?!dalvikvm)tag:^(?!dalvikvm)
+     * Returns the page number represented by this fragment
      */
     public int getPageNumber() {
         return mPageNumber;
@@ -280,7 +233,7 @@ public class PageFragment extends Fragment
 			if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber)
 			{
 				videoPlayer.cueVideo(video_id, savedTime);
-				Log.i("SSPA", "-----fragment "+ mPageNumber + " video cued----- " + toString());
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " video cued----- ");
 			}
 		}
 	}
@@ -290,7 +243,6 @@ public class PageFragment extends Fragment
 		for(int i = 0; i < pages.size(); i++)
 		{
 			pages.get(i).onSetCurriet();
-			Log.e("SSPA", "" + (pages.get(i) == null));
 		}
 	}
 	
@@ -299,19 +251,20 @@ public class PageFragment extends Fragment
 		Log.d("SSPA", "-----fragment "+ mPageNumber + " run onSetCurriet-----");
 		if(videoPlayer == null)
 		{
-			Log.i("SSPA", "-----fragment "+ mPageNumber + " player is null, create new----- ");
 			if(CocktailViewActivity.activity.getCurrietItem() == mPageNumber)
 			{
-				Log.i("SSPA", "-----fragment "+ mPageNumber + " try to init player----- ");
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " player is null, create new----- ");
 				videoFragment.initialize("AIzaSyC_entdejj1ep8RIeoIFJIcuxeXPTacmGw", new YouTubeInitListener());
+			} else {
+				Log.i("SSPA", "-----fragment "+ mPageNumber + " nothing to do with player----- ");
 			}
 		} else {
 			Log.i("SSPA", "-----fragment "+ mPageNumber + " player is not null, try to reset----- ");
 			if(CocktailViewActivity.activity.getCurrietItem() != mPageNumber)
 			{
-				Log.i("SSPA", "-----fragment "+ mPageNumber + " resets player----- ");
 				if(videoPlayer != null)
 				{
+					Log.i("SSPA", "-----fragment "+ mPageNumber + " resets player----- ");
 					savedTime = videoPlayer.getCurrentTimeMillis();
 					videoPlayer.release();
 					videoPlayer = null;

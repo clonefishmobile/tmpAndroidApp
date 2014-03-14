@@ -1,10 +1,8 @@
 package com.clonefish.cocktail;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -15,13 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.clonefish.cocktail.fragments.PageFragment;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.FacebookDialog;
+import com.clonefish.cocktail.social.SocialActivity;
 
 
-public class CocktailViewActivity extends FragmentActivity
+public class CocktailViewActivity extends SocialActivity
 {
 	/**
      * Собсно, будет отображать контент и отвечать за анимации свайпа
@@ -42,24 +37,12 @@ public class CocktailViewActivity extends FragmentActivity
     
     public static CocktailViewActivity activity;
     
-    private UiLifecycleHelper uiHelper;
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) 
-        {
-        	
-        }
-    };
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cocktail);
         NUM_PAGES = getIntent().getIntExtra(MainActivity.NUM_PAGES, 0);
         activity = this;
-        
-        uiHelper = new UiLifecycleHelper(this, callback);
-        uiHelper.onCreate(savedInstanceState);
         
         // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -108,26 +91,22 @@ public class CocktailViewActivity extends FragmentActivity
     protected void onDestroy() 
     {
     	Log.i(TAG, "------activity destroed-------");
-    	uiHelper.onDestroy();
     	super.onDestroy();
     }
     @Override
     protected void onPause() 
     {
-    	uiHelper.onPause();
     	super.onPause();
     }
     
     @Override
     protected void onResume() 
     {
-    	uiHelper.onResume();
     	super.onResume();
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	Log.i(TAG, "------activity instance saved-------");
-    	uiHelper.onSaveInstanceState(outState);
     	super.onSaveInstanceState(outState);
     }
     
@@ -135,23 +114,6 @@ public class CocktailViewActivity extends FragmentActivity
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
     	Log.i(TAG, "------activity instance restore-------");
     	super.onRestoreInstanceState(savedInstanceState);
-    }
-    
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
-            @Override
-            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
-                Log.e("Activity", String.format("Error: %s", error.toString()));
-            }
-
-            @Override
-            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
-                Log.i("Activity", "Success!");
-            }
-        });
     }
     
     /**
@@ -172,11 +134,6 @@ public class CocktailViewActivity extends FragmentActivity
         public int getCount() {
             return NUM_PAGES;
         }
-    }
-    
-    public UiLifecycleHelper getUIHelper()
-    {
-    	return uiHelper;
     }
     
     public int getCurrietItem()

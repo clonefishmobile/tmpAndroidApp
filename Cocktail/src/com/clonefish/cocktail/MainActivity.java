@@ -8,12 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,10 +23,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.clonefish.cocktail.database.DB;
+import com.clonefish.cocktail.social.SocialActivity;
+import com.clonefish.cocktail.social.facebook.LoginUsingLoginFragmentActivity;
+import com.clonefish.cocktail.social.vkontakte.VKLoginFragmentActivity;
+import com.clonefish.cocktail.utils.StringConverter;
+import com.facebook.model.GraphPlace;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
-public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cursor>
+public class MainActivity extends SocialActivity implements LoaderCallbacks<Cursor>
 {
     public static MainActivity activity;
+    
+    private GraphUser user;
+    private GraphPlace place;
     
     private ListView cocktailList;
     private DB db;
@@ -108,8 +116,24 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
 		        scAdapter.swapCursor(cursor);
 			}
 		});
+        
+        LoginButton buttonLoginFB = (LoginButton) findViewById(R.id.fb_login);
+        buttonLoginFB.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+            @Override
+            public void onUserInfoFetched(GraphUser user) {
+                MainActivity.this.user = user;
+            }
+        });
+        ImageButton buttonLoginVK = (ImageButton) findViewById(R.id.vk_login);
+        buttonLoginVK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	Intent intent = new Intent(activity, VKLoginFragmentActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-
+    
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -204,8 +228,9 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
     		String text  = allData.getString(allData.getColumnIndex(DB.COLUMN_INFO));
     		String video_id = allData.getString(allData.getColumnIndex(DB.COLUMN_VIDEO));
     		String category = allData.getString(allData.getColumnIndex(DB.COLUMN_CAT));
+    		int[] timing = StringConverter.convertStringToIntArray(allData.getString(allData.getColumnIndex(DB.COLUMN_TIMING)));
     		
-    		cocktailArray.add(new Cocktail(name, tags, text, video_id, category));
+    		cocktailArray.add(new Cocktail(name, tags, text, video_id, category, timing));
     		allData.moveToNext();
     	}
     }
@@ -236,15 +261,30 @@ public class MainActivity extends FragmentActivity implements LoaderCallbacks<Cu
                 "Со своей стороны добавим главное - первое трепетное знакомство, для которого рекомендуем Джек Роуз." +
                 "40%, 700 мл, Франция."};
         String[] cocktail_category = {"коктейли", "коктейли", "украшение", "украшение"};
+        int[] origTiming = {30000, 60000, 90000};
+        int[] romTiming = {30000, 60000, 90000, 120000, 150000};
+        int[] garTiming = {30000, 60000, 90000};
+        int[] cluTiming = {30000};
+        String[] timing = {
+        	StringConverter.convertArrayToString(origTiming),
+        	StringConverter.convertArrayToString(romTiming),
+        	StringConverter.convertArrayToString(garTiming),
+        	StringConverter.convertArrayToString(cluTiming)
+        	};
         
         for(int i = 0; i < 4; i++)
         {
-        	db.addRec(cocktail_name[i], cocktail_info[i], video_id[i], cocktail_category[i]);
+        	db.addRec(cocktail_name[i], cocktail_info[i], video_id[i], cocktail_category[i], timing[i]);
         }
     }
     
     public static ArrayList<Cocktail> getCocktailList()
     {
     	return cocktailArray;
+    }
+    
+    public GraphUser getUser()
+    {
+    	return user;
     }
 }

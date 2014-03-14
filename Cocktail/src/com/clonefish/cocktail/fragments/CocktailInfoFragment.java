@@ -2,16 +2,16 @@ package com.clonefish.cocktail.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.clonefish.cocktail.MainActivity;
 import com.clonefish.cocktail.R;
-import com.clonefish.cocktail.utils.TextJustifyUtils;
+import com.clonefish.cocktail.social.ShareButton;
+import com.clonefish.cocktail.social.SocialActivity;
 
 public class CocktailInfoFragment extends Fragment
 {
@@ -19,12 +19,19 @@ public class CocktailInfoFragment extends Fragment
 	private TextView header;
 	private TextView tags;
 	private TextView cocktail_info;
-
+	private Button share;
+	private int pageNumber;
+	
 	private static final String TAG = "CocktailInfoFragment";
 	
 	public CocktailInfoFragment()
 	{
 		
+	}
+	
+	public void setPageNumber(int pageNumber)
+	{
+		this.pageNumber = pageNumber;
 	}
 	
 	@Override
@@ -34,6 +41,9 @@ public class CocktailInfoFragment extends Fragment
 		header = (TextView) rootView.findViewById(R.id.header);
 		tags = (TextView) rootView.findViewById(R.id.tags);
 		cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_text);
+		share = (Button) rootView.findViewById(R.id.share);
+		share.setOnClickListener(new ShareButton((SocialActivity) getActivity(), "Смотрите какой классный коктейл можно сделать! Рецепт в Barmen Dev!"));
+        setInfo(pageNumber);
 		return rootView;
 	}
 
@@ -52,7 +62,9 @@ public class CocktailInfoFragment extends Fragment
 	
 	public void setInfo(int id)
 	{
+		if(header == null) header = (TextView) rootView.findViewById(R.id.header);
 		header.setText(MainActivity.getCocktailList().get(id).name);
+		if(cocktail_info == null) cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_text);
 		cocktail_info.setText(MainActivity.getCocktailList().get(id).text);
 	}
 }

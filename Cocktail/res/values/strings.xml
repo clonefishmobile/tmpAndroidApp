@@ -4,7 +4,21 @@
     <string name="app_name">Cocktail</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_search">ИСКАТЬ МАТЬ ЕГО!</string>
+    <string name="action_search">Поиск</string>
     <string name="search_hint">поиск по названию коктейля</string>
-
+	<string name="login">Login</string>
+    <string name="instructions">Login to create a link to fetch account data</string>
+    <string name="logout">Logout</string>
+    <string name="app_id">744939498855912</string>
+    
+    <string name="action_sign_in_short">Sign in with VK</string>
+    <string name="action_sign_in_force">Force OAuth</string>
+    <string name="users_get">users.get</string>
+    <string name="friends_get">friends.get</string>
+    <string name="captcha_force">captcha.force</string>
+    <string name="wall_post">wall.post</string>
+    <string name="upload_photo">upload photo</string>
+    <string name="upload_photo_to_wall">upload photo to wall</string>
+    <string name="upload_several_photos_to_wall">upload several photos to wall</string>
+    <string name="continue_using_app">Continue using test application</string>
 </resources>

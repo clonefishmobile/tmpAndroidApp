@@ -3,7 +3,6 @@ package com.clonefish.cocktail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -14,9 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.clonefish.cocktail.fragments.PageFragment;
+import com.clonefish.cocktail.social.SocialActivity;
 
 
-public class CocktailViewActivity extends FragmentActivity
+public class CocktailViewActivity extends SocialActivity
 {
 	/**
      * Собсно, будет отображать контент и отвечать за анимации свайпа
@@ -43,6 +43,7 @@ public class CocktailViewActivity extends FragmentActivity
         setContentView(R.layout.activity_cocktail);
         NUM_PAGES = getIntent().getIntExtra(MainActivity.NUM_PAGES, 0);
         activity = this;
+        
         // Создаем pager и его адаптер
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -92,7 +93,17 @@ public class CocktailViewActivity extends FragmentActivity
     	Log.i(TAG, "------activity destroed-------");
     	super.onDestroy();
     }
+    @Override
+    protected void onPause() 
+    {
+    	super.onPause();
+    }
     
+    @Override
+    protected void onResume() 
+    {
+    	super.onResume();
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
     	Log.i(TAG, "------activity instance saved-------");

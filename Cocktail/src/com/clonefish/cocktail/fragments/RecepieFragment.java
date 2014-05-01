@@ -3,6 +3,8 @@ package com.clonefish.cocktail.fragments;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.clonefish.cocktail.R;
+
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TableRow;
-
-import com.clonefish.cocktail.R;
 
 public class RecepieFragment extends Fragment 
 {

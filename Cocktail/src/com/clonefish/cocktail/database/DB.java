@@ -13,7 +13,7 @@ import android.util.Log;
 public class DB {
 	
 	private static final String DB_NAME = "cocktail_db";
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 3;
 	private static final String DB_TABLE = "cocktail_table";
 	
 	public static final String COLUMN_ID = "_id";

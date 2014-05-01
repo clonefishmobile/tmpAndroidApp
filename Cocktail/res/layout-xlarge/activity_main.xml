@@ -13,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:orientation="horizontal" >
 
-        <com.facebook.widget.LoginButton
+        
+		<com.facebook.widget.LoginButton
                 android:id="@+id/fb_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
                 facebook:confirm_logout="false"
                 facebook:fetch_user_info="true"
                 />
-
+        
         <ImageButton
             android:id="@+id/vk_login"
             android:layout_width="0dp"

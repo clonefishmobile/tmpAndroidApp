@@ -9,10 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,6 +106,16 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 			@Override
 			public void onClick(View v) {
 				Cursor cursor = db.searchCategory("украшение");
+		        scAdapter.swapCursor(cursor);
+			}
+		});
+        
+        ImageButton instruments = (ImageButton) findViewById(R.id.instruments);
+        stuff.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Cursor cursor = db.searchInstrumentTags();
 		        scAdapter.swapCursor(cursor);
 			}
 		});
@@ -225,7 +237,7 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
     	for(int i = 0; i < allData.getCount(); i++)
     	{
     		String name = allData.getString(allData.getColumnIndex(DB.COLUMN_NAME));
-    		String[] tags = null;
+    		String[] tags = StringConverter.convertStringToStringArray(allData.getString(allData.getColumnIndex(DB.COLUMN_TAGS)));
     		String text  = allData.getString(allData.getColumnIndex(DB.COLUMN_INFO));
     		String video_id = allData.getString(allData.getColumnIndex(DB.COLUMN_VIDEO));
     		String category = allData.getString(allData.getColumnIndex(DB.COLUMN_CAT));
@@ -351,16 +363,118 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
         int[] romTiming = {30000, 60000, 90000, 120000, 150000};
         int[] garTiming = {30000, 60000, 90000};
         int[] cluTiming = {30000};
+        
+        String[] tag1 = {"морковь","физалис","1 минута"};
+        String[] tag2 = {"грейпфрут","быстро и просто","20 секунд"};
+        String[] tag3 = {"грейпфрут","лайм","цедра", "фигурные ножницы","1 минута"};
+        String[] tag4 = {"яблоко","карвинг","2 минуты","нож для карвинга"};
+        String[] tag5 = {"яблоко","быстро и просто","20 секунд"};
+        String[] tag6 = {"баклажан","карвинг","2 минуты","нож для карвинга"};
+        String[] tag7 = {"ананас","лайм","вишня","нож для карвинга","2 минуты"};
+        String[] tag8 = {"лимон","физалис","зестер","1 минута"};
+        String[] tag9 = {"дыня","быстро и просто","1 минута"};
+        String[] tag10 = {"апельсин","цедра","нож для карвинга","пилер","1 минута"};
+        String[] tag11 = {"апельсин","клубника","цедра","пилер","нож для карвинга","2 минуты"};
+        String[] tag12 = {"паприка","ананас","формы","выемки","3 минуты"};
+        String[] tag13 = {"кумкват","дайкон","розмарин","нож для карвинга","2 минуты"};
+        String[] tag14 = {"грейпфрут","цедра","быстро и просто","20 секунд"};
+        String[] tag15 = {"лимон","вишня","цедра","пилер","нож для карвинга","2 минуты"};
+        String[] tag16 = {"яблоко","быстро и просто","1 минута"};
+        String[] tag17 = {"мандарин","лайм","вишня","быстро и просто","1 минута"};
+        String[] tag18 = {"кумкват","ананнас","карвинг","нож для карвинга","2 минуты"};
+        String[] tag19 = {"огурец","редис","карвинг","нож для карвинга","2 минуты"};
+        String[] tag20 = {"свекла","банан","фигурные","ножницы","нож для карвинга","2 минуты"};
+        String[] tag21 = {"грейпфрут","цедра","лемонграсс","быстро и просто","1 минута"};
+        String[] tag22 = {"лимон","вишня","цедра","зестер","быстро и просто","20 секунд"};
+        String[] tag23 = {"лимон","малина","цедра","пилер","быстро и просто","1 минута"};
+        String[] tag24 = {"огурец","малина","розмарин","карвинг","нож для карвинга","2 минуты"};
+        String[] tag25 = {"малина","апельсин","мята","формы","выемки","быстро и просто","1 минута"};
+        String[] tag26 = {"апельсин","цедра","лемонграсс","пилер","1 минута"};
+        String[] tag27 = {"морковь","малина","карвинг","нож для карвинга","2 минуты"};
+        String[] tag28 = {"рудис","киви","груша","ананас","карвинг","нож для карвинга","2 минуты"};
+        String[] tag29 = {"апельсин","ананас","нож шато","фигурные","ножницы","2 минуты"};
+        String[] tag30 = {"лимон","лайм","цедра","пилер","зестер","2 минуты"};
+        String[] tag31 = {"карамбола","быстро и просто","1 минута"};
+        String[] tag32 = {"яблоко","быстро и просто","1 минута"};
+        String[] tag33 = {"апельсин","цедра","зестер","быстро и просто","20 секунд"};
+        String[] tag34 = {"редис","физалис","карвинг","нож для карвинга","1 минута"};
+        String[] tag35 = {"кумкват","ананас","быстро и просто","1 минута"};
+        String[] tag36 = {"редис","быстро и просто","20 секунд"};
+        String[] tag37 = {"кумкват","быстро и просто","1 минута"};
+        String[] tag38 = {"апельсин","цедра","зестер","быстро и просто","1 минута"};
+        String[] tag39 = {"кумкват","киви","быстро и просто","20 секунд"};
+        String[] tag40 = {"питахая","киви","грейпфрут","паприка","формы","выемки","3 минуты"};
+        String[] tag41 = {"дайкон","розмарин","карвинг","нож для карвинга","2 минуты"};
+        String[] tag42 = {"грейпфрут","цедра","нож для карвинга","2 минуты"};
+        String[] tag43 = {"клубника","быстро и просто","20 секунд"};
+        String[] tag44 = {"мини","банан","малина","ежевика","быстро и просто","20 секунд"};
+        String[] tag45 = {"арбуз","лимон","цедра","формы","выемки","1 минута"};
+        String[] tag46 = {"яблоко","ананас","нож для сердцевины яблок","1 минута"};
+        
         String[] timing = {
         	StringConverter.convertArrayToString(origTiming),
         	StringConverter.convertArrayToString(romTiming),
         	StringConverter.convertArrayToString(garTiming),
         	StringConverter.convertArrayToString(cluTiming)
         	};
+        
+        String[] tags = {
+        		StringConverter.convertArrayToString(tag1),
+        		StringConverter.convertArrayToString(tag1),
+        		StringConverter.convertArrayToString(tag1),
+        		StringConverter.convertArrayToString(tag1),
+        		StringConverter.convertArrayToString(tag1),
+        		StringConverter.convertArrayToString(tag2),
+        		StringConverter.convertArrayToString(tag3),
+        		StringConverter.convertArrayToString(tag4),
+        		StringConverter.convertArrayToString(tag5),
+        		StringConverter.convertArrayToString(tag6),
+        		StringConverter.convertArrayToString(tag7),
+        		StringConverter.convertArrayToString(tag8),
+        		StringConverter.convertArrayToString(tag9),
+        		StringConverter.convertArrayToString(tag10),
+        		StringConverter.convertArrayToString(tag11),
+        		StringConverter.convertArrayToString(tag12),
+        		StringConverter.convertArrayToString(tag13),
+        		StringConverter.convertArrayToString(tag14),
+        		StringConverter.convertArrayToString(tag15),
+        		StringConverter.convertArrayToString(tag16),
+        		StringConverter.convertArrayToString(tag17),
+        		StringConverter.convertArrayToString(tag18),
+        		StringConverter.convertArrayToString(tag19),
+        		StringConverter.convertArrayToString(tag20),
+        		StringConverter.convertArrayToString(tag21),
+        		StringConverter.convertArrayToString(tag22),
+        		StringConverter.convertArrayToString(tag23),
+        		StringConverter.convertArrayToString(tag24),
+        		StringConverter.convertArrayToString(tag25),
+        		StringConverter.convertArrayToString(tag26),
+        		StringConverter.convertArrayToString(tag27),
+        		StringConverter.convertArrayToString(tag28),
+        		StringConverter.convertArrayToString(tag29),
+        		StringConverter.convertArrayToString(tag30),
+        		StringConverter.convertArrayToString(tag31),
+        		StringConverter.convertArrayToString(tag32),
+        		StringConverter.convertArrayToString(tag33),
+        		StringConverter.convertArrayToString(tag34),
+        		StringConverter.convertArrayToString(tag35),
+        		StringConverter.convertArrayToString(tag36),
+        		StringConverter.convertArrayToString(tag37),
+        		StringConverter.convertArrayToString(tag38),
+        		StringConverter.convertArrayToString(tag39),
+        		StringConverter.convertArrayToString(tag40),
+        		StringConverter.convertArrayToString(tag41),
+        		StringConverter.convertArrayToString(tag42),
+        		StringConverter.convertArrayToString(tag43),
+        		StringConverter.convertArrayToString(tag44),
+        		StringConverter.convertArrayToString(tag45),
+        		StringConverter.convertArrayToString(tag46)};
+        
         int leng = cocktail_name.length;
+        int tagsl = tags.length;
         for(int i = 0; i < leng; i++)
         {
-        	db.addRec(cocktail_name[i], cocktail_info[0], video_id[i], cocktail_category[1], timing[3]);
+        	db.addRec(cocktail_name[i], cocktail_info[0], video_id[i], cocktail_category[1], timing[3], tags[i]);
         }
     }
     

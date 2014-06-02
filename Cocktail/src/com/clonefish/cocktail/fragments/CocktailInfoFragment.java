@@ -51,7 +51,6 @@ public class CocktailInfoFragment extends Fragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-//		setInfo("docs/brain_fuck.txt");
 	}
 	
 	@Override
@@ -66,5 +65,12 @@ public class CocktailInfoFragment extends Fragment
 		header.setText(MainActivity.getCocktailList().get(id).name);
 		if(cocktail_info == null) cocktail_info = (TextView) rootView.findViewById(R.id.cocktail_text);
 		cocktail_info.setText(MainActivity.getCocktailList().get(id).text);
+		if(tags == null) tags = (TextView) rootView.findViewById(R.id.tags);
+		String tages = "";
+		for (String element : MainActivity.getCocktailList().get(id).tags) 
+		{
+			tages += element + "; ";
+		}
+		tags.setText(tages);
 	}
 }

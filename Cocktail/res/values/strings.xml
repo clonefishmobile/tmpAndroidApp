@@ -21,4 +21,48 @@
     <string name="upload_photo_to_wall">upload photo to wall</string>
     <string name="upload_several_photos_to_wall">upload several photos to wall</string>
     <string name="continue_using_app">Continue using test application</string>
+    <string-array name="ingredients">
+        <item >морковь</item>
+		<item >физалис</item> 
+		<item >грейпфрут</item> 
+		<item >лайм</item> 
+		<item >цедра</item> 
+		<item >яблоко</item> 
+		<item >яблоко</item> 
+		<item >баклажан</item> 
+		<item >ананас</item> 
+		<item >лайм</item> 
+		<item >вишня</item> 
+		<item >лимон</item> 
+		<item >физалис</item> 
+		<item >зестер</item> 
+		<item >дыня</item> 
+		<item >апельсин</item> 
+		<item >цедра</item> 
+		<item >клубника</item> 
+		<item >пилер</item> 
+		<item >паприка</item> 
+		<item >кумкват</item> 
+		<item >дайкон</item> 
+		<item >розмарин</item> 
+		<item >грейпфрут</item> 
+		<item >мандарин</item> 
+		<item >ананнас</item> 
+		<item >огурец</item> 
+		<item >редис</item> 
+		<item >свекла</item> 
+		<item >банан</item> 
+		<item >лемонграсс</item> 
+		<item >малина</item> 
+		<item >мята</item> 
+		<item >морковь</item> 
+		<item >рудис</item> 
+		<item >киви</item> 
+		<item >груша</item> 
+		<item >карамбола</item> 
+		<item >питахая</item> 
+		<item >мини банан</item> 
+		<item >ежевика</item> 
+		<item >арбуз</item> 
+    </string-array>
 </resources>

@@ -30,4 +30,21 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>libs/YouTubeAndroidPlayerApi.jar</name>
+			<type>1</type>
+			<location>G:/projects/youtube api/libs/YouTubeAndroidPlayerApi.jar</location>
+		</link>
+		<link>
+			<name>libs/android-support-v4.jar</name>
+			<type>1</type>
+			<location>G:/eclipse/sdk/extras/android/support/v4/android-support-v4.jar</location>
+		</link>
+		<link>
+			<name>res/drawable-mdpi/splash.png</name>
+			<type>1</type>
+			<location>G:/projects/splash.png</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -23,6 +23,7 @@ import com.vk.sdk.api.VKRequest.VKRequestListener;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKWallPostResult;
 
+
 public class ShareButton implements OnClickListener, OnMultiChoiceClickListener
 {
 	private SocialActivity mActivity;

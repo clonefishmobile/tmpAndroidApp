@@ -1,7 +1,6 @@
 package com.clonefish.cocktail;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import android.app.SearchManager;
 import android.app.SearchManager.OnDismissListener;
@@ -9,12 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +24,6 @@ import android.widget.TextView;
 
 import com.clonefish.cocktail.database.DB;
 import com.clonefish.cocktail.social.SocialActivity;
-import com.clonefish.cocktail.social.facebook.LoginUsingLoginFragmentActivity;
 import com.clonefish.cocktail.social.vkontakte.VKLoginFragmentActivity;
 import com.clonefish.cocktail.utils.StringConverter;
 import com.facebook.model.GraphPlace;

@@ -42,6 +42,16 @@
 			<location>G:/eclipse/sdk/extras/android/support/v4/android-support-v4.jar</location>
 		</link>
 		<link>
+			<name>libs/ormlite-android-4.48.jar</name>
+			<type>1</type>
+			<location>D:/download/ormlite-android-4.48.jar</location>
+		</link>
+		<link>
+			<name>libs/ormlite-core-4.48.jar</name>
+			<type>1</type>
+			<location>D:/download/ormlite-core-4.48.jar</location>
+		</link>
+		<link>
 			<name>res/drawable-mdpi/splash.png</name>
 			<type>1</type>
 			<location>G:/projects/splash.png</location>

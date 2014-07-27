@@ -2,25 +2,33 @@ package com.clonefish.cocktail;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.app.SearchManager.OnDismissListener;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.clonefish.cocktail.database.DB;
 import com.clonefish.cocktail.social.SocialActivity;
@@ -38,8 +46,10 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
     private GraphPlace place;
     
     private ListView cocktailList;
+    private GridView tagGrid;
     private DB db;
     private SimpleCursorAdapter scAdapter;
+    private TagsAdapter tgAdapter;
     private static ArrayList<Cocktail> cocktailArray = new ArrayList<Cocktail>();
     
     public static final String POSITION = "position";
@@ -82,6 +92,21 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 			}
         });
         
+        tagGrid = (GridView) findViewById(R.id.tags_grid);
+        tgAdapter = new TagsAdapter(db.getAllTagsData(), this);
+        tagGrid.setAdapter(tgAdapter);
+        tagGrid.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+				Toast.makeText(activity, (String) tagGrid.getItemAtPosition(position), Toast.LENGTH_LONG).show();
+			}
+		});
+        
+        ViewGroup.LayoutParams params = tagGrid.getLayoutParams();
+        params.height = 0;
+        tagGrid.setLayoutParams(params);
+        
         // создаем лоадер для чтения данных
         getSupportLoaderManager().initLoader(0, null, this);
         handleIntent(getIntent());
@@ -121,7 +146,7 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 			
 			@Override
 			public void onClick(View v) {
-				Cursor cursor = db.getAllData();
+				Cursor cursor = db.getAllCocktailData();
 		        scAdapter.swapCursor(cursor);
 			}
 		});
@@ -155,6 +180,9 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 	        String query = intent.getStringExtra(SearchManager.QUERY);
 	        Cursor cursor = db.search(query);
 	        scAdapter.swapCursor(cursor);
+	        ViewGroup.LayoutParams params = tagGrid.getLayoutParams();
+	        params.height = 0;
+	        tagGrid.setLayoutParams(params);
         }
     }
 
@@ -167,7 +195,7 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 			
 			@Override
 			public void onDismiss() {
-				Cursor cursor = db.getAllData();
+				Cursor cursor = db.getAllCocktailData();
 		        scAdapter.swapCursor(cursor);
 			}
 		});
@@ -180,6 +208,12 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 	    switch (item.getItemId()) 
 	    {
 		    case R.id.action_search:
+		    	ViewGroup.LayoutParams params = tagGrid.getLayoutParams();
+		    	Display display = getWindowManager().getDefaultDisplay();
+		    	Point point = new Point();
+		    	display.getSize(point);
+		        params.height = (int) (point.y/2);
+		        tagGrid.setLayoutParams(params);
 		    	onSearchRequested();
 		    	return true;
 		    default:
@@ -219,7 +253,7 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
 
 		@Override
 		public Cursor loadInBackground() {
-			Cursor cursor = db.getAllData();
+			Cursor cursor = db.getAllCocktailData();
 			createCocktailList(cursor);
 			return cursor;
 		}
@@ -470,7 +504,65 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
         int tagsl = tags.length;
         for(int i = 0; i < leng; i++)
         {
-        	db.addRec(cocktail_name[i], cocktail_info[0], video_id[i], cocktail_category[1], timing[3], tags[i]);
+        	db.addCocktailRec(cocktail_name[i], cocktail_info[0], video_id[i], cocktail_category[1], timing[3], tags[i]);
+        }
+        
+        String[] uni_tags = 
+        	{"морковь",
+        	"физалис",
+        	"1 минута",
+        	"грейпфрут",
+        	"быстро и просто",
+        	"20 секунд",
+        	"лайм",
+        	"цедра",
+        	"фигурные ножницы",
+        	"яблоко",
+        	"карвинг",
+        	"2 минуты",
+        	"нож для карвинга",
+        	"баклажан",
+        	"ананас",
+        	"вишня",
+        	"лимон",
+        	"зестер",
+        	"дыня",
+        	"апельсин",
+        	"пилер",
+        	"клубника",
+        	"паприка",
+        	"формы",
+        	"выемки",
+        	"3 минуты",
+        	"кумкват",
+        	"дайкон",
+        	"розмарин",
+        	"мандарин",
+        	"ананнас",
+        	"огурец",
+        	"редис",
+        	"свекла",
+        	"банан",
+        	"фигурные",
+        	"ножницы",
+        	"лемонграсс",
+        	"малина",
+        	"мята",
+        	"рудис",
+        	"киви",
+        	"груша",
+        	"нож шато",
+        	"карамбола",
+        	"питахая",
+        	"мини",
+        	"ежевика",
+        	"арбуз",
+        	"нож для сердцевины яблок"};
+        
+        int utagsl = uni_tags.length;
+        for(int i = 0; i < utagsl; i++)
+        {
+        	db.addTagRec(uni_tags[i]);
         }
     }
     
@@ -482,5 +574,51 @@ public class MainActivity extends SocialActivity implements LoaderCallbacks<Curs
     public GraphUser getUser()
     {
     	return user;
+    }
+    
+    private class TagsAdapter extends BaseAdapter
+    {
+    	private Cursor tagsData;
+    	private Activity activity;
+    	
+    	public TagsAdapter(Cursor cursor, Activity activity)
+    	{
+    		this.tagsData = cursor;
+    		this.activity = activity;
+    	}
+		@Override
+		public int getCount() {
+			return tagsData.getCount();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			tagsData.moveToPosition(position);
+			return tagsData.getString(tagsData.getColumnIndex(DB.COLUMN_NAME));
+		}
+
+		@Override
+		public long getItemId(int position) {
+			tagsData.moveToPosition(position);
+			return tagsData.getInt(tagsData.getColumnIndex(DB.COLUMN_ID));
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) 
+		{
+			Button but = (Button) convertView;
+			if(but == null)
+			{
+				but = new Button(activity);
+				tagsData.moveToPosition(position);
+				but.setText(tagsData.getString(tagsData.getColumnIndex(DB.COLUMN_NAME)));
+			} else {
+				tagsData.moveToPosition(position);
+				but.setText(tagsData.getString(tagsData.getColumnIndex(DB.COLUMN_NAME)));
+			}
+			
+			return but;
+		}
+    	
     }
 }

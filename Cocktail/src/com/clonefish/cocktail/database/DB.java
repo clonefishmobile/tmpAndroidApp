@@ -1,7 +1,6 @@
 package com.clonefish.cocktail.database;
 
 import com.clonefish.cocktail.Constants;
-import com.clonefish.cocktail.R;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,8 +13,9 @@ import android.util.Log;
 public class DB {
 	
 	private static final String DB_NAME = "cocktail_db";
-	private static final int DB_VERSION = 4;
-	private static final String DB_TABLE = "cocktail_table";
+	private static final int DB_VERSION = 5;
+	private static final String DB_TABLE_COCKTAIL = "cocktail_table";
+	private static final String DB_TABLE_TAGS = "tags_table";
 	
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_VIDEO = "video_id";
@@ -27,8 +27,8 @@ public class DB {
 	
 	private static final String TAG = "DB";
 	
-	private static final String DB_CREATE = 
-		"create table " + DB_TABLE + "(" +
+	private static final String COCKTAIL_CREATE = 
+		"create table " + DB_TABLE_COCKTAIL + "(" +
 		COLUMN_ID + " integer primary key autoincrement, " +
 		COLUMN_NAME + " text, " +
 		COLUMN_INFO + " text, " +
@@ -36,6 +36,11 @@ public class DB {
 		COLUMN_CAT + " text, " +
 		COLUMN_TIMING + " text, " +
 		COLUMN_TAGS + " text);";
+	
+	private static final String TAGS_CREATE = 
+			"create table " + DB_TABLE_TAGS + "(" +
+			COLUMN_ID + " integer primary key autoincrement, " +
+			COLUMN_NAME + " text);";
 		  
 	private final Context dbContext;
 		  
@@ -64,14 +69,20 @@ public class DB {
 	}
 	
 	// получить все данные из таблицы DB_TABLE
-	public Cursor getAllData()
+	public Cursor getAllCocktailData()
 	{
 		if(Constants.DEBUG) Log.i(TAG, "-----getting all data-----");
-		return mDB.query(DB_TABLE, null, null, null, null, null, null);
+		return mDB.query(DB_TABLE_COCKTAIL, null, null, null, null, null, null);
+	}
+	
+	public Cursor getAllTagsData()
+	{
+		if(Constants.DEBUG) Log.i(TAG, "-----getting all data-----");
+		return mDB.query(DB_TABLE_TAGS, null, null, null, null, null, null);
 	}
 	
 	// добавить запись в DB_TABLE
-	public void addRec(String cocktail_name, String cocktail_info, String video_id, String cathegory, String timing, String tags) 
+	public void addCocktailRec(String cocktail_name, String cocktail_info, String video_id, String cathegory, String timing, String tags) 
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(COLUMN_NAME, cocktail_name);
@@ -80,45 +91,58 @@ public class DB {
 		cv.put(COLUMN_CAT, cathegory);
 		cv.put(COLUMN_TIMING, timing);
 		cv.put(COLUMN_TAGS, tags);
-		mDB.insert(DB_TABLE, null, cv);
+		mDB.insert(DB_TABLE_COCKTAIL, null, cv);
+	}
+	
+	public void addTagRec(String tag_name) 
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(COLUMN_NAME,tag_name);
+		mDB.insert(DB_TABLE_TAGS, null, cv);
 	}
 	
 	// добавить запись в DB_TABLE
-	public void addRec(ContentValues cv) 
+	public void addCocktailRec(ContentValues cv) 
 	{
-		mDB.insert(DB_TABLE, null, cv);
+		mDB.insert(DB_TABLE_COCKTAIL, null, cv);
 	}
+	
+	// добавить запись в DB_TABLE
+		public void addTagRec(ContentValues cv) 
+		{
+			mDB.insert(DB_TABLE_TAGS, null, cv);
+		}
 	  
 	// удалить запись из DB_TABLE
 	public void delRec(long id) 
 	{
-		mDB.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
+		mDB.delete(DB_TABLE_COCKTAIL, COLUMN_ID + " = " + id, null);
 	}
 	
 	public Cursor search(String query)
 	{
-		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+		return mDB.query(true, DB_TABLE_COCKTAIL, new String[] { COLUMN_ID, COLUMN_NAME,
 				COLUMN_CAT }, COLUMN_NAME + " LIKE" + "'%" + query + "%'", null,
 				null, null, null, null);
 	}
 	
 	public Cursor searchCategory(String query)
 	{
-		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+		return mDB.query(true, DB_TABLE_COCKTAIL, new String[] { COLUMN_ID, COLUMN_NAME,
 				COLUMN_CAT }, COLUMN_CAT + " LIKE" + "'%" + query + "%'", null,
 				null, null, null, null);
 	}
 	
 	public Cursor searchTags(String query)
 	{
-		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+		return mDB.query(true, DB_TABLE_COCKTAIL, new String[] { COLUMN_ID, COLUMN_NAME,
 				COLUMN_CAT, COLUMN_TAGS }, COLUMN_TAGS + " LIKE" + "'%" + query + "%'", null,
 				null, null, null, null);
 	}
 	
 	public Cursor searchInstrumentTags()
 	{
-		return mDB.query(true, DB_TABLE, new String[] { COLUMN_ID, COLUMN_NAME,
+		return mDB.query(true, DB_TABLE_COCKTAIL, new String[] { COLUMN_ID, COLUMN_NAME,
 				COLUMN_CAT, COLUMN_TAGS }, COLUMN_TAGS + " LIKE" + "'%фигурные ножницы%'" 
 		+ " or " + "'%нож для карвинга%'"
 		+ " or " + "'%пилер%'"
@@ -129,7 +153,7 @@ public class DB {
 	
 	public boolean isTableExists()
 	{
-	    Cursor cursor = mDB.query(DB_TABLE, null, null, null, null, null, null);
+	    Cursor cursor = mDB.query(DB_TABLE_COCKTAIL, null, null, null, null, null, null);
 	    if(cursor != null) 
 	    {
 	        if(cursor.getCount() > 0) 
@@ -146,7 +170,7 @@ public class DB {
 	
 	public void clearDatabase() 
 	{
-		   mDB.delete(DB_TABLE, null, null); //erases everything in the table.
+		   mDB.delete(DB_TABLE_COCKTAIL, null, null); //erases everything in the table.
 		   mDB.close();
 	}
 	
@@ -162,20 +186,23 @@ public class DB {
 		{
 			// создаем таблицу с полями
 			if(Constants.DEBUG) Log.i(TAG, "-----create db-----");
-		    db.execSQL(DB_CREATE);
+		    db.execSQL(COCKTAIL_CREATE);
+		    db.execSQL(TAGS_CREATE);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			if(Constants.DEBUG) Log.w(TAG, "-----try to upgrade table-----");
-			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_COCKTAIL);
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_TAGS);
 			onCreate(db);
 		}
 		
 		@Override
 		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			if(Constants.DEBUG) Log.w(TAG, "-----try to downgrade table-----");
-			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_COCKTAIL);
+			db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_TAGS);
 			onCreate(db);
 		}
 	}

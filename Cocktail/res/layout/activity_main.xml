@@ -30,12 +30,32 @@
             android:src="@drawable/ic_launcher" />
     </LinearLayout>
 
+    
+    <LinearLayout
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/social_login_bb"
+        android:orientation="horizontal" >
+
+        <GridView
+            android:id="@+id/tags_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="5dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp" >
+
+        </GridView>
+    </LinearLayout>
+    
     <LinearLayout
         android:id="@+id/category_buttons"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/social_login_bb"
+        android:layout_below="@+id/tags"
         android:orientation="vertical" >
 
         <ImageButton

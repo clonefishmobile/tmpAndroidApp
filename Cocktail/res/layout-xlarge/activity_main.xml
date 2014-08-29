@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -39,7 +38,7 @@
         android:orientation="horizontal" >
 
         <GridView
-            android:id="@+id/tags_grid"
+            android:id="@+id/category_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:horizontalSpacing="5dp"
@@ -48,68 +47,5 @@
             android:verticalSpacing="5dp" >
 
         </GridView>
-    </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/category_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tags"
-        android:orientation="vertical" >
-
-        <ImageButton
-            android:id="@+id/cockteail_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Коктейли"
-            android:src="@drawable/ic_cedra"
-            android:text="Коктейли" />
-
-        <ImageButton
-            android:id="@+id/stuff_cat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_ingredients"
-            android:text="Украшения" />
-
-        <ImageButton
-            android:id="@+id/instruments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_instruments"
-            android:text="фигурные ножницы, нож для карвинга, пилер, нож шато, нож для сердцевины яблок" />
-
-        <ImageButton
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_20sec"
-            android:text="20 секунд" />
-
-        <ImageButton
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher"
-            android:text="категория 5" />
-
-        <ImageButton
-            android:id="@+id/all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_advice"
-            android:text="Показать все" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/cocktail_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/category_buttons"
-        android:layout_toRightOf="@id/category_buttons"
-        tools:listitem="@layout/item" >
-    </ListView>
-
+    </LinearLayout>  
 </RelativeLayout>

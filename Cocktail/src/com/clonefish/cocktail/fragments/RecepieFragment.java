@@ -42,7 +42,7 @@ public class RecepieFragment extends Fragment
 	private void setImages()
 	{
 		ImageView[] images = {
-			(ImageView) row1.findViewById(R.id.imageView1),
+			(ImageView) row1.findViewById(R.id.categoryImage),
 			(ImageView) row1.findViewById(R.id.imageView2),
 			(ImageView) row1.findViewById(R.id.imageView3),
 			(ImageView) row1.findViewById(R.id.imageView4),

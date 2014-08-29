@@ -36,13 +36,12 @@
 	        android:text=""
 	        android:textSize="12sp" >
 	    </TextView>
+
+	    <TextView
+	        android:id="@+id/cocktailId"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp" />
 	
     </LinearLayout>
-    
-    <TextView 
-        android:id="@+id/cId"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

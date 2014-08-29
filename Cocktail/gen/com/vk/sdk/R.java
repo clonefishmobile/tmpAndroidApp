@@ -15,13 +15,13 @@ public final class R {
 		public static final int vk_white = 0x7f050002;
 	}
 	public static final class id {
-		public static final int captchaAnswer = 0x7f070035;
-		public static final int captcha_container = 0x7f070032;
-		public static final int imageView = 0x7f070034;
-		public static final int progressBar = 0x7f070033;
+		public static final int captchaAnswer = 0x7f070031;
+		public static final int captcha_container = 0x7f07002e;
+		public static final int imageView = 0x7f070030;
+		public static final int progressBar = 0x7f07002f;
 	}
 	public static final class layout {
-		public static final int dialog_vkcaptcha = 0x7f030013;
+		public static final int dialog_vkcaptcha = 0x7f030017;
 	}
 	public static final class string {
 		public static final int vk_enter_captcha_text = 0x7f060000;

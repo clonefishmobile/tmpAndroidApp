@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+
+    <tag
+        name="лимон"
+        image="lemon.png" >
+    </tag>
+    <tag
+        name="быстро и просто"
+        image="" >
+    </tag>
+    <tag
+        name="10 секунд"
+        image="" >
+    </tag>
+    <tag
+        name="кумкват"
+        image="kumkvat.png" >
+    </tag>
+    <tag
+        name="киви"
+        image="" >
+    </tag>
+    <tag
+        name="20 секунд"
+        image="" >
+    </tag>
+    <tag
+        name="мандарин"
+        image="" >
+    </tag>
+    <tag
+        name="лайм"
+        image="laim.png" >
+    </tag>
+    <tag
+        name="вишня"
+        image="vihna.png" >
+    </tag>
+    <tag
+        name="1 минута"
+        image="" >
+    </tag>
+    <tag
+        name="карамбола"
+        image="karambola.png" >
+    </tag>
+    <tag
+        name="питахая"
+        image="patihaia.png" >
+    </tag>
+    <tag
+        name="физалис"
+        image="fizalis.png" >
+    </tag>
+    <tag
+        name="жёлтый перец"
+        image="perec_yellow" >
+    </tag>
+    <tag
+        name="засушеная роза"
+        image="" >
+    </tag>
+    <tag
+        name="цукаты"
+        image="" >
+    </tag>
+    <tag
+        name="клубника"
+        image="klu.png" >
+    </tag>
+    <tag
+        name="грейпфрут"
+        image="greip.png" >
+    </tag>
+    <tag
+        name="яблоко"
+        image="apple.png" >
+    </tag>
+    <tag
+        name="кивано"
+        image="kivano.png" >
+    </tag>
+    <tag
+        name="ревень"
+        image="" >
+    </tag>
+    <tag
+        name="розмарин"
+        image="rozmarin.png" >
+    </tag>
+    <tag
+        name="зестер"
+        image="" >
+    </tag>
+    <tag
+        name="редис"
+        image="redis.png" >
+    </tag>
+    <tag
+        name="апельсин"
+        image="apelsin.png" >
+    </tag>
+    <tag
+        name="джангл фрукт"
+        image="" >
+    </tag>
+    <tag
+        name="банан"
+        image="banana.png" >
+    </tag>
+    <tag
+        name="малина"
+        image="malina.png" >
+    </tag>
+    <tag
+        name="ежевика"
+        image="ejevika.png" >
+    </tag>
+    <tag
+        name="ананас"
+        image="ananas.png" >
+    </tag>
+    <tag
+        name="нож для сердцевины яблок"
+        image="" >
+    </tag>
+    <tag
+        name="морковь"
+        image="mork.png" >
+    </tag>
+    <tag
+        name="цедра"
+        image="" >
+    </tag>
+    <tag
+        name="лемонграсс"
+        image="" >
+    </tag>
+    <tag
+        name="формы"
+        image="" >
+    </tag>
+    <tag
+        name="выемки"
+        image="" >
+    </tag>
+    <tag
+        name="нож для карвинга"
+        image="" >
+    </tag>
+    <tag
+        name="пилер"
+        image="" >
+    </tag>
+    <tag
+        name="фигурные ножницы"
+        image="" >
+    </tag>
+    <tag
+        name="2 минуты"
+        image="" >
+    </tag>
+    <tag
+        name="нож шато"
+        image="" >
+    </tag>
+    <tag
+        name="мята"
+        image="mata.png" >
+    </tag>
+    <tag
+        name="салат"
+        image="" >
+    </tag>
+    <tag
+        name="кукуруза"
+        image="" >
+    </tag>
+    <tag
+        name="дыня"
+        image="" >
+    </tag>
+    <tag
+        name="арбуз"
+        image="" >
+    </tag>
+    <tag
+        name="паприка"
+        image="" >
+    </tag>
+    <tag
+        name="3 минуты"
+        image="" >
+    </tag>
+    <tag
+        name="груша"
+        image="" >
+    </tag>
+    <tag
+        name="фигурный нож"
+        image="" >
+    </tag>
+    <tag
+        name="дайкон"
+        image="daikon.png" >
+    </tag>
+    <tag
+        name="базилик"
+        image="bazelik.png" >
+    </tag>
+    <tag
+        name="слива"
+        image="" >
+    </tag>
+    <tag
+        name="огурец"
+        image="ogyrec.png" >
+    </tag>
+    <tag
+        name="перец"
+        image="" >
+    </tag>
+    <tag
+        name="карвинг"
+        image="" >
+    </tag>
+    <tag
+        name="свекла"
+        image="" >
+    </tag>
+    <tag
+        name="помидор черри"
+        image="cherry.png" >
+    </tag>
+    <tag
+        name="баклажан"
+        image="" >
+    </tag>
+    <tag
+        name="ананнас"
+        image="ananas.png" >
+    </tag>
+    <tag
+        name="личи"
+        image="" >
+    </tag>
+    <tag
+        name="маракуя"
+        image="" >
+    </tag>
+    <tag
+        name="листья ананаса"
+        image="" >
+    </tag>
+    <tag
+        name="пергамент"
+        image="" >
+    </tag>
+    <tag
+        name="ножницы"
+        image="" >
+    </tag>
+    <tag
+        name="сельдерей"
+        image="" >
+    </tag>
+    <tag
+        name="спаржа"
+        image="" >
+    </tag>
+    <tag
+        name="красная смородина"
+        image="" >
+    </tag>
+    <tag
+        name="блоко"
+        image="" >
+    </tag>
+    <tag
+        name="рамбутан"
+        image="" >
+    </tag>
+
+</data>

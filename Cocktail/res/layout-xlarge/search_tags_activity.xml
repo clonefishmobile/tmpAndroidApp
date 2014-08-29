@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </SearchView>
+
+    <ToggleButton
+        android:id="@+id/toggleButton1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton" 
+        android:textOn="Поиск по тегам"
+        android:textOff="Поиск по названию"/>
+
+	<GridView
+		android:id="@+id/tagsGrid"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:numColumns="auto_fit" >
+	</GridView>
+	
+</LinearLayout>
